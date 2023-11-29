@@ -62,7 +62,7 @@
       <template x-for="(item, index) in items" :key="index">
         <li
           class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
-          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : ! (window.location.pathname === item.link) }"
           @click="window.location.href = item.link"
         >
           <i :class="item.icon"></i>
@@ -98,7 +98,7 @@
       <template x-for="(item, index) in items" :key="index">
         <li
           class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
-          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : ! (window.location.pathname === item.link) }"
           @click="window.location.href = item.link"
         >
           <i :class="item.icon"></i>
@@ -126,7 +126,7 @@
       <template x-for="(item, index) in items" :key="index">
         <li
           class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
-          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : ! (window.location.pathname === item.link) }"
           @click="window.location.href = item.link"
         >
           <i :class="item.icon"></i>
