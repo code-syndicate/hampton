@@ -14,8 +14,10 @@
       {% include 'partials/__sidebar.html' %}
 
       <div
-        class="bg-[#F8F8F8] py-8 px-8 lg:max-w-[85%] max-w-[80%] lg:ml-[15%] ml-[20%]"
+        class="bg-[#F8F8F8] p-4 sm:py-8 sm:px-8 lg:max-w-[85%] sm:max-w-[80%] lg:ml-[15%] sm:ml-[20%] min-h-screen"
       >
+        <div class="pt-12"></div>
+
         {% block body %} {% endblock %}
       </div>
     </div>

@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %} Account {% endblock %} {% block body
+%}
+
+<main class="space-y-10">
+  <div class="space-y-4">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Manage Bank Account
+    </p>
+
+    <div class="space-y-1 w-full">
+      <p class="text-sm text-gray-400">
+        Manage your bank account 
+      </p>
+
+      <div class="flex flex-col md:flex-row justify-start items-center space-y-4 md:space-y-0 md:space-x-4 w-full ">
+        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 ">Current Ledger Balance</p>
+
+          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 ">Current Credit Balance</p>
+
+          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+        </div>
+
+     
+        
+        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 ">Spendable Reward Balance</p>
+
+          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+        </div>
+
+      
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      Transaction History
+  </p>
+    {% include 'partials/__tx_history.html' %}
+
+  
+
+    </div>
+  </div>
+</main>
+{% endblock %}

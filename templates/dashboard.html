@@ -1,29 +1,32 @@
-{% extends "base.html" %} {% block body %}
+{% extends "base.html" %} {% block title %} My Dashboard {% endblock %} {% block
+body %}
 
 <main class="space-y-10">
   <div class="space-y-4">
-    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
       Hi James Andrew
     </p>
 
     <div class="space-y-1">
       <p class="text-sm text-gray-400">Welcome to your dashboard</p>
 
-      <div class="flex flex-row justify-start items-center space-x-4">
-        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2">
+      <div
+        class="flex flex-col md:flex-row justify-start items-center space-y-4 md:space-y-0 md:space-x-4 w-full"
+      >
+        <div
+          class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch"
+        >
           <p class="text-sm text-gray-400">Total Account Balance</p>
 
-          <p class="text-2xl lg:text-3xl text-black/90 font-medium">
-            $13,074.28
-          </p>
+          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
         </div>
 
-        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2">
+        <div
+          class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch"
+        >
           <p class="text-sm text-gray-400">EUR/USD</p>
 
-          <p class="text-2xl lg:text-3xl text-black/90 font-medium">
-            0.99 USD/1.11EUR
-          </p>
+          <p class="text-lg lg:text-xl text-black/90 font-medium">$1,074.28</p>
         </div>
       </div>
     </div>

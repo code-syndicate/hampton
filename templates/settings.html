@@ -1,0 +1,107 @@
+{% extends "base.html" %} {% block title %} Settings {% endblock %} {% block body
+%}
+
+<main class="space-y-10">
+  <div class="space-y-4">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Manage Settings
+    </p>
+
+    <div class="space-y-1 w-full">
+      <p class="text-sm text-gray-400">
+        Manage your account settings
+      </p>
+
+      <div class="grid grid-cols-2 justify-items-center  gap-4  lg:gap-8 w-full ">
+        <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 "> Full Name</p>
+
+          <p class="text-base lg:text-lg text-black/90 font-medium">Jessica Jones </p>
+        </div>
+
+        <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 "> Joined </p>
+
+          <p class="text-base lg:text-lg text-black/90 font-medium"> Feb. 23, 2020</p>
+        </div>
+
+     
+        
+        <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 ">Email Address</p>
+
+          <p class="text-base lg:text-lg text-black/90 font-medium"> davechappel@gmail.com </p>
+        </div>
+
+
+        <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
+          <p class="text-sm text-gray-400 ">Last login</p>
+
+          <p class="text-base lg:text-lg text-black/90 font-medium"> Jan. 22, 2022 2.32PM </p>
+        </div>
+
+      
+      </div>
+
+
+    </div>
+
+    <p class="text-sm md:text-base text-[#477684] font-medium">
+          Actions
+    </p>
+
+    <ul
+    class="space-y-6"
+    x-data="{
+    items : [
+
+    {
+      name: 'Edit Information',
+      icon: 'fas fa-user-edit',
+      link: '/settings/edit',
+      
+    },
+
+
+    {
+      name: 'Change Password',
+      icon: 'fas fa-lock',
+      link: '/change-password',
+      
+    },
+
+    {
+      name: 'Contact Us',
+      icon: 'fas fa-envelope',
+      link: '/contact',
+      
+    },
+    
+    {
+        name: 'Sign out',
+        icon: 'fas fa-arrow-right-from-bracket',
+        link: '/logout',
+        
+      }
+    ] }"
+  >
+    <template x-for="(item, index) in items" :key="index">
+      <li
+        class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-400"
+        :class="{'text-yellow-500': window.location === item.link, ' hover:text-gray-500 hover:cursor-pointer' : ! (window.location.pathname === item.link) }"
+        @click="window.location.href = item.link"
+      >
+        <i :class="item.icon"></i>
+        <span x-text="item.name"></span>
+      </li>
+    </template>
+  </ul>
+
+  
+
+  </div>
+
+ 
+  </div>
+</main>
+{% endblock %}

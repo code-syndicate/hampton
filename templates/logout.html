@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %} Log out {% endblock %} {% block body
+%}
+
+<main class="space-y-10 pb-16">
+  <div class="space-y-4">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Log out
+    </p>
+  </div>
+
+  <div class="space-y-4">
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      Sign out of your account
+    </p>
+
+    <div class="space-y-1">
+      <p class="text-sm text-gray-400">
+        Are you sure you wish to sign out of your account?
+      </p>
+
+      <div class="py-6">
+        <button
+          class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+        >
+          Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

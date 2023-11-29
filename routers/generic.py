@@ -23,3 +23,18 @@ async def dashboard(request: Request):
 @router.get("/history")
 async def history(request: Request):
     return template_to_response("history.html", {"request": request})
+
+
+@router.get("/account")
+async def account(request: Request):
+    return template_to_response("account.html", {"request": request})
+
+
+@router.get("/logout")
+async def logout(request: Request):
+    return template_to_response("logout.html", {"request": request})
+
+
+@router.get("/settings")
+async def settings(request: Request):
+    return template_to_response("settings.html", {"request": request})
