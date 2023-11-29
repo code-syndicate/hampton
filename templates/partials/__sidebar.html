@@ -1,0 +1,138 @@
+<div
+  class="border-r shadow-md fixed z-10 inset-y-0 left-0 w-full lg:max-w-[15%] max-w-[20%] bg-white min-h-full p-8 space-y-10 overflow-y-scroll max-h-[99vh]"
+>
+  <!-- Logo  -->
+
+  <div class="w-full">
+    <img src="/static/images/logo.png" alt="logo" class="" />
+  </div>
+
+  <div class="flex flex-col justify-center items-start space-y-8">
+    <span class="font-bold text-xs text-[#477684]"> General </span>
+
+    <ul
+      class="space-y-4"
+      x-data="{
+        items2 : [
+        
+        {
+            name: 'Settings',
+            icon: 'fas fa-cog',
+            link: '/settings',
+            active: false
+          },
+        ],
+    items : [
+      {
+        name: 'Dashboard',
+        icon: 'fas fa-home',
+        link: '/dashboard',
+        active: true
+      },
+      {
+        name: 'Account',
+        icon: 'fas fa-wallet',
+        link: '/account',
+        active: false
+      },
+      {
+        name: 'Transactions',
+        icon: 'fas fa-exchange-alt',
+        link: '/transactions',
+        active: false
+      },
+    
+
+      {
+        name : 'History',
+        icon : 'fas fa-history',
+        link: '/history',
+        active :  false,
+      },
+
+      {
+        name : 'Transfer',
+        icon : 'fa-solid fa-money-bill-transfer',
+        link: '/transfer',
+        active :  false,
+      }
+    ]
+  }"
+    >
+      <template x-for="(item, index) in items" :key="index">
+        <li
+          class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          @click="window.location.href = item.link"
+        >
+          <i :class="item.icon"></i>
+          <span x-text="item.name"></span>
+        </li>
+      </template>
+    </ul>
+  </div>
+
+  <div class="flex flex-col justify-center items-start space-y-8">
+    <span class="font-bold text-xs text-[#477684]"> Other </span>
+
+    <ul
+      class="space-y-4"
+      x-data="{
+      items : [
+
+      {
+        name: 'Help and Suppport',
+        icon: 'fas fa-info-circle',
+        link: '/suppport',
+        active: false
+      },
+      
+      {
+          name: 'Settings',
+          icon: 'fas fa-cog',
+          link: '/settings',
+          active: false
+        }
+      ] }"
+    >
+      <template x-for="(item, index) in items" :key="index">
+        <li
+          class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          @click="window.location.href = item.link"
+        >
+          <i :class="item.icon"></i>
+          <span x-text="item.name"></span>
+        </li>
+      </template>
+    </ul>
+  </div>
+
+  <div class="flex flex-col justify-center items-start space-y-8">
+    <ul
+      class="space-y-4"
+      x-data="{
+        items : [
+
+      
+        {
+            name: 'Log Out',
+            icon: 'fas fa-arrow-right-from-bracket',
+            link: '/logout',
+            active: false
+          }
+        ] }"
+    >
+      <template x-for="(item, index) in items" :key="index">
+        <li
+          class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-gray-300"
+          :class="{'text-yellow-500': window.location.pathname === item.link, ' hover:text-gray-500 hover:cursor-pointer' : !window.location.pathname === item.link }"
+          @click="window.location.href = item.link"
+        >
+          <i :class="item.icon"></i>
+          <span x-text="item.name"></span>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>

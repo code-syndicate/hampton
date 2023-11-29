@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include 'partials/__includes.html' %}
+
+    <title>
+      {% block title %} Dashboard {% endblock %} - {{settings.app_name}}
+    </title>
+  </head>
+  <body>
+    <div class="min-h-full w-full">
+      {% include 'partials/__sidebar.html' %}
+
+      <div
+        class="bg-[#F8F8F8] py-8 px-8 lg:max-w-[85%] max-w-[80%] lg:ml-[15%] ml-[20%]"
+      >
+        {% block body %} {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

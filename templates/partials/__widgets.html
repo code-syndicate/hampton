@@ -1,0 +1,37 @@
+<!-- Info/Error Notify  -->
+<div
+  x-show="showNotify"
+  class="fixed inset-0 z-40 bg-black/70 flex flex-col justify-center items-center"
+>
+  <h2
+    x-text="notifyText"
+    class="text-center text-base md:text-lg mb-6 md:mb-12 mt-6 text-white font-medium px-6"
+    style="text-shadow: 1px 1px 2px black"
+  ></h2>
+
+  <button
+    x-show="notifyType === 'error'"
+    @click="showNotify = false"
+    class="bg-white/80 text-black/70 text-sm rounded-md px-6 py-2 border-2 border-white/50 hover:border-white/75"
+  >
+    Close
+  </button>
+</div>
+
+<!-- overlay  -->
+<div
+  x-show="showProgress"
+  class="fixed inset-0 bg-black/70 z-40 flex flex-col justify-center items-center"
+>
+  <div
+    class="animate-spin rounded-full h-10 w-10 border-t-2 border-r-2 border-t-white border-r-white border-b-black border-l-black"
+  ></div>
+
+  <h2
+    x-text="progressText"
+    class="text-center text-lg md:text-xl mb-6 md:mb-12 mt-6 text-white"
+    style="text-shadow: 1px 1px 2px black"
+  ></h2>
+</div>
+
+<!-- overlay  -->

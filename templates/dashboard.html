@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block body %}
+
+<main class="space-y-10">
+  <div class="space-y-4">
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      Hi James Andrew
+    </p>
+
+    <div class="space-y-1">
+      <p class="text-sm text-gray-400">Welcome to your dashboard</p>
+
+      <div class="flex flex-row justify-start items-center space-x-4">
+        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2">
+          <p class="text-sm text-gray-400">Total Account Balance</p>
+
+          <p class="text-2xl lg:text-3xl text-black/90 font-medium">
+            $13,074.28
+          </p>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2">
+          <p class="text-sm text-gray-400">EUR/USD</p>
+
+          <p class="text-2xl lg:text-3xl text-black/90 font-medium">
+            0.99 USD/1.11EUR
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      LIVE Market Data
+    </p>
+
+    <div class="space-y-1">
+      <p class="text-sm text-gray-400">
+        View live market performance in real time
+      </p>
+
+      <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2"></div>
+    </div>
+  </div>
+</main>
+{% endblock %}

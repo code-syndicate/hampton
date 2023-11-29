@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include 'partials/__includes.html' %}
+
+    <title>Log In - {{settings.app_name}}</title>
+  </head>
+  <body>
+    <div
+      class="relative min-h-screen w-full gap-y-8 grid grid-cols-2 justify-items-center"
+      x-data="{
+        showNotify: false,
+        notifyText: '',
+        notifyType: '',
+        showProgress: false,
+        progressText: '',
+      }"
+    >
+      {% include 'partials/__widgets.html' %}
+
+      <div
+        class="absolute lg:static left-1/2 -translate-x-1/2 lg:translate-x-0 z-10 max-w-[80%] w-full bottom-[10%] md:max-w-md lg:max-w-full lg:col-span-1 bg-white p-8 lg:p-16"
+        x-data="{
+
+
+        async submitForm() {
+
+
+            const email  = document.querySelector('input[name=email]').value;
+            const password  = document.querySelector('input[name=password]').value;
+
+            if (email && password) {
+                const data = {
+                    email,
+                    password
+                }
+
+
+                showProgress = true;
+                progressText = 'Signing in...';
+
+
+                try{
+                  const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                  });
+
+                  if(res.status === 200) {
+                    
+                    notifyText = 'Signed in successfully';
+                    notifyType = 'success';
+                    showNotify = true;
+
+
+
+                  } else {
+                    showProgress = false;
+
+                    notifyText = 'Invalid credentials';
+                    notifyType = 'error';
+                    showNotify = true;
+                  }
+                  
+                }
+
+                catch(err){
+                  showProgress = false;
+
+                  notifyText = 'Something went wrong';
+                  notifyType = 'error';
+                  showNotify = true;
+                }
+
+
+             
+            } else {
+
+              showProgress = false;
+
+                notifyText = 'Please fill in all fields';
+                notifyType = 'error';
+                showNotify = true;
+            }
+
+
+        }
+
+      }"
+      >
+        <form x-on:submit.prevent="submitForm" class="w-full">
+          <legend
+            class="text-2xl font-bold lg:text-3xl text-[#1D4354] py-4 text-left"
+          >
+            Hi, Welcome Back!
+          </legend>
+
+          <div class="space-y-8 lg:space-y-12 max-w-md">
+            <div
+              class="flex flex-col justify-start items-start space-y-4 w-full"
+            >
+              <label class="text-sm font-medium text-gray-600">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                required
+                name="email"
+                placeholder="Email"
+                class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+              />
+            </div>
+
+            <div
+              x-data="{
+              showPassword: false,
+            }"
+              class="flex flex-col justify-start items-start space-y-4 w-full"
+            >
+              <div class="flex flex-row justify-between w-full">
+                <label class="text-sm font-medium text-gray-600">
+                  Password
+                </label>
+
+                <span
+                  class="text-[#CBB55C] hover:underline text-sm hover:cursor-pointer"
+                >
+                  Forgot password?
+                </span>
+              </div>
+
+              <div class="relative w-full">
+                <input
+                  required
+                  x-bind:type="showPassword ? 'text' : 'password'"
+                  name="password"
+                  placeholder="Password"
+                  class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+                />
+
+                <div
+                  x-on:click="showPassword = !showPassword"
+                  class="absolute z-10 top-1/2 -translate-y-1/2 right-4 text-gray-600 hover:cursor-pointer"
+                >
+                  <span x-show="!showPassword" class="fa fa-eye text-lg"></span>
+
+                  <span
+                    x-show="showPassword"
+                    class="fa fa-eye-slash text-lg"
+                  ></span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              role="form"
+              class="py-4 block rounded-xl w-full px-4 text-white text-center bg-[#F3B600] hover:bg-[#F3B600]/90"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="min-h-full relative w-full col-span-2 lg:col-span-1 bg-[#22657C] space-y-8 p-8 lg:p-16"
+      >
+        <h1 class="text-2xl lg:text-3xl font-bold text-left text-white">
+          Harness the power of global finance without limits with
+          <span class="text-[#E8B723]"> Haptic Credit Union </span>
+        </h1>
+
+        <p class="text-white text-sm lg:text-base">
+          Our 10,0000 investors join us monthly
+        </p>
+
+        <div class="flex flex-row justify-start items-center -space-x-2">
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white bg-sky-500 shadow-md hover:z-10"
+          >
+            <img
+              class="w-full h-full rounded-full"
+              src="https://i.pravatar.cc/150?img=3"
+            />
+          </div>
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white bg-sky-500 shadow-md hover:z-10"
+          >
+            <img
+              class="w-full h-full rounded-full"
+              src="https://i.pravatar.cc/150?img=7"
+            />
+          </div>
+
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white bg-sky-500 shadow-md hover:z-10"
+          >
+            <img
+              class="w-full h-full rounded-full"
+              src="https://i.pravatar.cc/150?img=8"
+            />
+          </div>
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white bg-sky-500 shadow-md hover:z-10"
+          >
+            <img
+              class="w-full h-full rounded-full"
+              src="https://i.pravatar.cc/150?img=9"
+            />
+          </div>
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white bg-sky-500 shadow-md hover:z-10"
+          >
+            <img
+              class="w-full h-full rounded-full"
+              src="https://i.pravatar.cc/150?img=10"
+            />
+          </div>
+        </div>
+
+        <!-- image  -->
+
+        <div class="absolute bottom-0 left-[50%] -translate-x-[50%] w-full">
+          <img src="/static/images/dots.svg" alt="dots" class="w-full" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
