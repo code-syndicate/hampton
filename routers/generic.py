@@ -38,3 +38,8 @@ async def logout(request: Request):
 @router.get("/settings")
 async def settings(request: Request):
     return template_to_response("settings.html", {"request": request})
+
+
+@router.get("/transfer")
+async def history(request: Request):
+    return template_to_response("transfer.html", {"request": request})

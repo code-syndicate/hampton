@@ -1,0 +1,183 @@
+{% extends "base.html" %} {% block title %} Transfer {% endblock %} {% block
+body %}
+
+<main
+x-data="{ interbank : false, intrabank : true }"
+
+class="space-y-10 pb-16">
+  <div class="space-y-4 w-full">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Transfer
+    </p>
+  </div>
+
+  <div class="space-y- w-full">
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      Transfer funds to another account
+    </p>
+
+    <div class="space-y-1 w-full">
+      <p class="text-sm text-gray-400">
+        Fill in the form below to transfer funds
+      </p>
+
+      <div
+        class="pt-4 pb-6 flex flex-row justify-between text-sm items-center text-black/70 text-center w-full"
+      >
+      
+      <span
+      
+      @click="interbank = true; intrabank = false"
+      class="border-b pl-4 border-gray-300 w-full inline-block pb-2"
+      :class="{'border-black/70' : !!interbank, 'border-gray-300' : !interbank}"
+      >
+        Intra-bank Transfer
+      </span>
+      <span 
+        @click="interbank = false; intrabank = true"
+      class="border-b border-black/70 w-full inline-block pb-2"
+      :class="{'border-black/70' : !!intrabank, 'border-gray-300' : !intrabank}"
+      >
+        Interbank Transfer
+      </span>
+      </div>
+
+      <form
+      x-show="interbank"
+      class="max-w-2xl">
+        <div class="space-y-2">
+          <label for="account_number" class="text-sm text-gray-400">
+            Account Number
+          </label>
+
+          <input
+            type="text"
+            name="account_number"
+            id="account_number"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="amount" class="text-sm text-gray-400"> Amount </label>
+
+          <input
+            type="text"
+            name="amount"
+            id="amount"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="description" class="text-sm text-gray-400">
+            Description
+          </label>
+
+          <input
+            type="text"
+            name="description"
+            id="description"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="pin" class="text-sm text-gray-400"> PIN </label>
+
+          <input
+            type="password"
+            name="pin2"
+            id="pin2"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+
+          <p class="text-sm text-gray-400">
+            Enter your PIN to authorize this transaction
+          </p>
+        </div>
+
+        <div class="py-6">
+          <button
+            class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+          >
+            Proceed
+          </button>
+      </form>
+
+
+      <form
+      x-show="intrabank"
+      class="max-w-2xl "
+      >
+
+
+        <div class="space-y-2">
+          <label for="account_number" class="text-sm text-gray-400">
+            Account Number
+          </label>
+
+          <input
+            type="text"
+            name="account_number"
+            id="account_number"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="amount" class="text-sm text-gray-400"> Amount </label>
+
+          <input
+            type="text"
+            name="amount"
+            id="amount"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="description" class="text-sm text-gray-400">
+            Description
+          </label>
+
+          <input
+            type="text"
+            name="description"
+            id="description"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="pin" class="text-sm text-gray-400"> PIN </label>
+
+          <input
+            type="password"
+            name="pin"
+            id="pin"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+          />
+
+          <p class="text-sm text-gray-400">
+            Enter your PIN to authorize this transaction
+          </p>
+        </div>
+
+        <div class="py-6">
+          <button
+            class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+          >
+            Proceed
+          </button>
+        </div>
+
+      </form>
+
+
+
+    
+    </div>
+  </div>
+</main>
+{% endblock %}
