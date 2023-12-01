@@ -14,19 +14,61 @@ body %}
         class="flex flex-col md:flex-row justify-start items-center space-y-4 md:space-y-0 md:space-x-4 w-full"
       >
         <div
-          class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch"
+          class="bg-gradient-to-tr border from-white to-sky-100 rounded-xl p-4 pr-16 inline-block space-y-3 w-full self-stretch"
+        >
+          <p class="text-sm text-gray-400">Account Number</p>
+
+          <p class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium">
+            01275395819
+          </p>
+
+          <div class="hidden lg:block text-2xl text-gray-400">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+        </div>
+        <div
+          class="bg-gradient-to-tr border from-white to-sky-100 rounded-xl p-4 pr-16 inline-block space-y-3 w-full self-stretch"
         >
           <p class="text-sm text-gray-400">Total Account Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+          <p class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium">
+            $13,074.28
+          </p>
+
+          <div class="hidden lg:block text-2xl text-gray-400">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
         </div>
 
-        <div
-          class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch"
-        >
-          <p class="text-sm text-gray-400">EUR/USD</p>
-
-          <p class="text-lg lg:text-xl text-black/90 font-medium">$1,074.28</p>
+        <div class="bg-white rounded-xl p-4 w-full">
+          <!-- TradingView Widget BEGIN -->
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <div class="tradingview-widget-copyright">
+              <a
+                href="https://www.tradingview.com/"
+                rel="noopener nofollow"
+                target="_blank"
+                ><span class="blue-text"
+                  >Track all markets on TradingView</span
+                ></a
+              >
+            </div>
+            <script
+              type="text/javascript"
+              src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js"
+              async
+            >
+                {
+                "symbol": "FX:EURUSD",
+                "width": "100%",
+                "colorTheme": "light",
+                "isTransparent": false,
+                "locale": "en"
+              }
+            </script>
+          </div>
+          <!-- TradingView Widget END -->
         </div>
       </div>
     </div>
@@ -42,7 +84,155 @@ body %}
         View live market performance in real time
       </p>
 
-      <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2"></div>
+      <div class="w-full bg-white rounded-xl p-4 h-[60vh] overflow-scroll">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <div class="tradingview-widget-copyright">
+            <a
+              href="https://www.tradingview.com/"
+              rel="noopener nofollow"
+              target="_blank"
+              ><span class="blue-text"
+                >Track all markets on TradingView</span
+              ></a
+            >
+          </div>
+          <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js"
+            async
+          >
+              {
+              "width": "100%",
+              "height": "100%",
+              "symbolsGroups": [
+                {
+                  "name": "Indices",
+                  "originalName": "Indices",
+                  "symbols": [
+                    {
+                      "name": "FOREXCOM:SPXUSD",
+                      "displayName": "S&P 500"
+                    },
+                    {
+                      "name": "FOREXCOM:NSXUSD",
+                      "displayName": "US 100"
+                    },
+                    {
+                      "name": "FOREXCOM:DJI",
+                      "displayName": "Dow 30"
+                    },
+                    {
+                      "name": "INDEX:NKY",
+                      "displayName": "Nikkei 225"
+                    },
+                    {
+                      "name": "INDEX:DEU40",
+                      "displayName": "DAX Index"
+                    },
+                    {
+                      "name": "FOREXCOM:UKXGBP",
+                      "displayName": "UK 100"
+                    }
+                  ]
+                },
+                {
+                  "name": "Futures",
+                  "originalName": "Futures",
+                  "symbols": [
+                    {
+                      "name": "CME_MINI:ES1!",
+                      "displayName": "S&P 500"
+                    },
+                    {
+                      "name": "CME:6E1!",
+                      "displayName": "Euro"
+                    },
+                    {
+                      "name": "COMEX:GC1!",
+                      "displayName": "Gold"
+                    },
+                    {
+                      "name": "NYMEX:CL1!",
+                      "displayName": "WTI Crude Oil"
+                    },
+                    {
+                      "name": "NYMEX:NG1!",
+                      "displayName": "Gas"
+                    },
+                    {
+                      "name": "CBOT:ZC1!",
+                      "displayName": "Corn"
+                    }
+                  ]
+                },
+                {
+                  "name": "Bonds",
+                  "originalName": "Bonds",
+                  "symbols": [
+                    {
+                      "name": "CBOT:ZB1!",
+                      "displayName": "T-Bond"
+                    },
+                    {
+                      "name": "CBOT:UB1!",
+                      "displayName": "Ultra T-Bond"
+                    },
+                    {
+                      "name": "EUREX:FGBL1!",
+                      "displayName": "Euro Bund"
+                    },
+                    {
+                      "name": "EUREX:FBTP1!",
+                      "displayName": "Euro BTP"
+                    },
+                    {
+                      "name": "EUREX:FGBM1!",
+                      "displayName": "Euro BOBL"
+                    }
+                  ]
+                },
+                {
+                  "name": "Forex",
+                  "originalName": "Forex",
+                  "symbols": [
+                    {
+                      "name": "FX:EURUSD",
+                      "displayName": "EUR to USD"
+                    },
+                    {
+                      "name": "FX:GBPUSD",
+                      "displayName": "GBP to USD"
+                    },
+                    {
+                      "name": "FX:USDJPY",
+                      "displayName": "USD to JPY"
+                    },
+                    {
+                      "name": "FX:USDCHF",
+                      "displayName": "USD to CHF"
+                    },
+                    {
+                      "name": "FX:AUDUSD",
+                      "displayName": "AUD to USD"
+                    },
+                    {
+                      "name": "FX:USDCAD",
+                      "displayName": "USD to CAD"
+                    }
+                  ]
+                }
+              ],
+              "showSymbolLogo": true,
+              "colorTheme": "light",
+              "isTransparent": false,
+              "locale": "en"
+            }
+          </script>
+        </div>
+        <!-- TradingView Widget END -->
+      </div>
     </div>
   </div>
 </main>

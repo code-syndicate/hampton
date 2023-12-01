@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %} Transactions {% endblock %} {% block body
+%}
+
+<main class="space-y-10">
+  <div class="space-y-4">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Transactions
+    </p>
+
+    <div class="space-y-1 w-full">
+      <p class="text-sm text-gray-400">
+        View all your transactions
+      </p>
+
+   
+
+
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    
+   
+    {% include 'partials/__tx_history.html' %}
+
+  
+
+    </div>
+  </div>
+</main>
+{% endblock %}

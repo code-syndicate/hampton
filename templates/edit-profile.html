@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %} Edit Profile {% endblock %} {% block
+body %}
+
+<main x-data="{ interbank : false, intrabank : true }" class="space-y-10 pb-16">
+  <div class="space-y-4 w-full">
+    <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
+      Profile
+    </p>
+  </div>
+
+  <div class="space-y-4 w-full">
+    <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
+      Update your profile
+    </p>
+
+    <div class="space-y-1 w-full">
+      <p class="text-sm text-gray-400">
+        Fill in the form below to update your profile
+      </p>
+
+      <div class="w-full">
+        <form
+          x-transition
+          class="max-w-3xl w-full flex flex-col space-y-4 justify-center items-start"
+        >
+          <div class="relative space-y-4 w-full">
+            <label class="text-sm font-medium text-gray-600">
+              First Name
+            </label>
+            <input
+              required
+              type="text"
+              name="firstName"
+              placeholder="Enter your first name"
+              class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+            />
+          </div>
+
+          <div class="relative space-y-4 w-full">
+            <label class="text-sm font-medium text-gray-600"> Last Name </label>
+            <input
+              required
+              type="text"
+              name="lastName"
+              placeholder="Enter your last name"
+              class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+            />
+          </div>
+
+          <div class="relative space-y-4 w-full">
+            <label class="text-sm font-medium text-gray-600">
+              Email Address
+            </label>
+            <input
+              required
+              type="email"
+              name="email"
+              value="user@email.com"
+              readonly
+              disabled
+              class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+            />
+          </div>
+
+          <div class="py-6">
+            <button
+              class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request
+from fastapi.responses import RedirectResponse
 
 from utils.render_template import template_to_response
 
@@ -7,7 +8,8 @@ router = APIRouter()
 
 @router.get("/")
 async def index(request: Request):
-    return template_to_response("index.html", {"request": request})
+
+    return RedirectResponse(url=request.url_for("dashboard"))
 
 
 @router.get("/log-in")
@@ -43,3 +45,23 @@ async def settings(request: Request):
 @router.get("/transfer")
 async def history(request: Request):
     return template_to_response("transfer.html", {"request": request})
+
+
+@router.get("/transactions")
+async def transactions(request: Request):
+    return template_to_response("transactions.html", {"request": request})
+
+
+@router.get("/profile/edit")
+async def edit_profile(request: Request):
+    return template_to_response("edit-profile.html", {"request": request})
+
+
+@router.get("/forgot-password")
+async def forgot_password(request: Request):
+    return template_to_response("forgot-password.html", {"request": request})
+
+
+@router.get("/change-password")
+async def change_password(request: Request):
+    return template_to_response("change-password.html", {"request": request})

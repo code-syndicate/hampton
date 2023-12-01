@@ -1,17 +1,14 @@
 {% extends "base.html" %} {% block title %} Transfer {% endblock %} {% block
 body %}
 
-<main
-x-data="{ interbank : false, intrabank : true }"
-
-class="space-y-10 pb-16">
+<main x-data="{ interbank : false, intrabank : true }" class="space-y-10 pb-16">
   <div class="space-y-4 w-full">
     <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
       Transfer
     </p>
   </div>
 
-  <div class="space-y- w-full">
+  <div class="space-y-4 w-full">
     <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
       Transfer funds to another account
     </p>
@@ -24,159 +21,287 @@ class="space-y-10 pb-16">
       <div
         class="pt-4 pb-6 flex flex-row justify-between text-sm items-center text-black/70 text-center w-full"
       >
-      
-      <span
-      
-      @click="interbank = true; intrabank = false"
-      class="border-b pl-4 border-gray-300 w-full inline-block pb-2"
-      :class="{'border-black/70' : !!interbank, 'border-gray-300' : !interbank}"
-      >
-        Intra-bank Transfer
-      </span>
-      <span 
-        @click="interbank = false; intrabank = true"
-      class="border-b border-black/70 w-full inline-block pb-2"
-      :class="{'border-black/70' : !!intrabank, 'border-gray-300' : !intrabank}"
-      >
-        Interbank Transfer
-      </span>
+        <span
+          @click="interbank = false; intrabank = true"
+          class="border-b hover:cursor-pointer hover:bg-gray-100 pl-4 border-gray-300 w-full inline-block py-2"
+          :class="{'border-black/70' : !!intrabank, 'border-gray-300' : !intrabank}"
+        >
+          Internal Transfer
+        </span>
+        <span
+          @click="interbank = true; intrabank = false"
+          class="border-b hover:cursor-pointer hover:bg-gray-100 border-black/70 w-full inline-block py-2"
+          :class="{'border-black/70' : !!interbank, 'border-gray-300' : !interbank}"
+        >
+          External Transfer
+        </span>
       </div>
 
-      <form
-      x-show="interbank"
-      class="max-w-2xl">
-        <div class="space-y-2">
-          <label for="account_number" class="text-sm text-gray-400">
-            Account Number
-          </label>
+      <div class="flex flex-row justify-center items-center w-full">
+        <form x-transition x-show="intrabank" class="max-w-3xl w-full">
+          <legend>
+            <p
+              class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold"
+            >
+              Internal Transfer
+            </p>
+          </legend>
 
-          <input
-            type="text"
-            name="account_number"
-            id="account_number"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
+          <div class="space-y-2">
+            <label for="account_number" class="text-sm text-gray-400">
+              Account Number
+            </label>
 
-        <div class="space-y-2">
-          <label for="amount" class="text-sm text-gray-400"> Amount </label>
+            <input
+              type="text"
+              required
+              name="account_number"
+              id="account_number1"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
-          <input
-            type="text"
-            name="amount"
-            id="amount"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
+          <div class="space-y-2">
+            <label for="amount" class="text-sm text-gray-400"> Amount </label>
 
-        <div class="space-y-2">
-          <label for="description" class="text-sm text-gray-400">
-            Description
-          </label>
+            <input
+              type="text"
+              name="amount"
+              required
+              id="amount1"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
-          <input
-            type="text"
-            name="description"
-            id="description"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
+          <div class="space-y-2">
+            <label for="description" class="text-sm text-gray-400">
+              Description
+            </label>
 
-        <div class="space-y-2">
-          <label for="pin" class="text-sm text-gray-400"> PIN </label>
+            <input
+              type="text"
+              name="description"
+              id="description1"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
-          <input
-            type="password"
-            name="pin2"
-            id="pin2"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
+          <div class="space-y-2">
+            <label for="pin" class="text-sm text-gray-400"> PIN </label>
 
-          <p class="text-sm text-gray-400">
-            Enter your PIN to authorize this transaction
-          </p>
-        </div>
+            <input
+              type="password"
+              name="pin"
+              id="pin1"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
 
-        <div class="py-6">
-          <button
-            class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+            <p class="text-sm text-gray-400">
+              Enter your PIN to authorize this transaction
+            </p>
+          </div>
+
+          <div class="py-6">
+            <button
+              class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+            >
+              Proceed
+            </button>
+          </div>
+        </form>
+
+        <form
+          x-transition
+          x-data="{
+
+          transactionMethod : '',
+
+          handleTransactionMethodChange(event) {
+
+            this.transactionMethod = event.target.value
+
+          }
+
+        }"
+          x-show="interbank"
+          class="max-w-3xl w-full"
+        >
+          <legend>
+            <p
+              class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold"
+            >
+              External Transfer
+            </p>
+          </legend>
+
+          <div class="space-y-2">
+            <label for="account_number" class="text-sm text-gray-400">
+              Transfer Method
+            </label>
+
+            <select
+              @change="handleTransactionMethodChange($event)"
+              type="text"
+              name="account_number"
+              id="account_number2"
+              class="appearance-none w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            >
+              <option aria-readonly="true">Select method</option>
+              <option value="bank">Transfer to another bank</option>
+              <option value="cashapp">Cash App</option>
+              <option value="paypal">Paypal</option>
+              <option value="bitcoin">Bitcoin</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label for="amount" class="text-sm text-gray-400"> Amount </label>
+
+            <input
+              type="text"
+              name="amount"
+              id="amount2"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
+
+          <!-- Specials  -->
+
+          <div
+            x-show="transactionMethod === 'bank'"
+            x-transition
+            class="space-y-2"
           >
-            Proceed
-          </button>
-      </form>
+            <label for="account_number" class="text-sm text-gray-400">
+              Account Number
+            </label>
 
+            <input
+              type="text"
+              name="account_number"
+              id="account_number2"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
-      <form
-      x-show="intrabank"
-      class="max-w-2xl "
-      >
-
-
-        <div class="space-y-2">
-          <label for="account_number" class="text-sm text-gray-400">
-            Account Number
-          </label>
-
-          <input
-            type="text"
-            name="account_number"
-            id="account_number"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="amount" class="text-sm text-gray-400"> Amount </label>
-
-          <input
-            type="text"
-            name="amount"
-            id="amount"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="description" class="text-sm text-gray-400">
-            Description
-          </label>
-
-          <input
-            type="text"
-            name="description"
-            id="description"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="pin" class="text-sm text-gray-400"> PIN </label>
-
-          <input
-            type="password"
-            name="pin"
-            id="pin"
-            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
-          />
-
-          <p class="text-sm text-gray-400">
-            Enter your PIN to authorize this transaction
-          </p>
-        </div>
-
-        <div class="py-6">
-          <button
-            class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+          <div
+            x-show="transactionMethod === 'bank'"
+            x-transition
+            class="space-y-2"
           >
-            Proceed
-          </button>
-        </div>
+            <label for="swift" class="text-sm text-gray-400"> SWIFT </label>
 
-      </form>
+            <input
+              type="text"
+              name="swift"
+              id="swift"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
+          <div
+            x-show="transactionMethod === 'bank'"
+            x-transition
+            class="space-y-2"
+          >
+            <label for="iban" class="text-sm text-gray-400"> IBAN </label>
 
+            <input
+              type="text"
+              name="iban"
+              id="iban"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
 
-    
+          <div
+            x-show="transactionMethod === 'paypal'"
+            x-transition
+            class="space-y-2"
+          >
+            <label for="paypalemail" class="text-sm text-gray-400">
+              Paypal email
+            </label>
+
+            <input
+              type="text"
+              name="paypalEmail"
+              id="paypalemail"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
+
+          <div
+            x-show="transactionMethod === 'cashapp'"
+            x-transition
+            class="space-y-2"
+          >
+            <label for="cashapptag" class="text-sm text-gray-400"> T ag </label>
+
+            <input
+              type="text"
+              name="cashAppTag"
+              id="cashapptag"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
+
+          <div
+            x-show="transactionMethod === 'bitcoin'"
+            x-transition
+            class="space-y-2"
+          >
+            <label for="bitcoinaddress" class="text-sm text-gray-400">
+              Bitcoin Address
+            </label>
+
+            <input
+              type="text"
+              name="bitcoinAddress"
+              id="bitcoinaddress"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
+
+          <!-- End of specials  -->
+
+          <div class="space-y-2">
+            <label for="description" class="text-sm text-gray-400">
+              Description
+            </label>
+
+            <input
+              type="text"
+              name="description"
+              id="description2"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="pin" class="text-sm text-gray-400"> PIN </label>
+
+            <input
+              type="password"
+              name="pin"
+              id="pin2"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
+            />
+
+            <p class="text-sm text-gray-400">
+              Enter your PIN to authorize this transaction
+            </p>
+          </div>
+
+          <div class="py-6">
+            <button
+              class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
+            >
+              Proceed
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </main>
