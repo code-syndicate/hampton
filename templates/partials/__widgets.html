@@ -1,7 +1,7 @@
 <!-- Info/Error Notify  -->
 <div
   x-show="showNotify"
-  class="fixed inset-0 z-40 bg-black/70 flex flex-col justify-center items-center"
+  class="fixed min-h-screen inset-0 z-[60] bg-black/70 flex flex-col justify-center items-center"
 >
   <h2
     x-text="notifyText"
@@ -21,15 +21,15 @@
 <!-- overlay  -->
 <div
   x-show="showProgress"
-  class="fixed inset-0 bg-black/70 z-40 flex flex-col justify-center items-center"
+  class="fixed min-h-screen inset-0 z-[60] bg-black/70 flex flex-col justify-center items-center space-y-10"
 >
-  <div
-    class="animate-spin rounded-full h-10 w-10 border-t-2 border-r-2 border-t-white border-r-white border-b-black border-l-black"
-  ></div>
+  <span
+    class="animate-spin rounded-full p-6 border-t-2 border-r-2 border-t-white border-r-white border-b-black border-l-black"
+  ></span>
 
   <h2
     x-text="progressText"
-    class="text-center text-lg md:text-xl mb-6 md:mb-12 mt-6 text-white"
+    class="text-center text-lg md:text-xl text-white"
     style="text-shadow: 1px 1px 2px black"
   ></h2>
 </div>
