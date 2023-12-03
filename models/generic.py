@@ -100,12 +100,16 @@ class TX(BaseModel):
     uid:  str = Field(default_factory=get_uuid4)
     created:  float = Field(default_factory=get_utc_timestamp)
     user:  str = Field(min_length=8)
+    user_email:  EmailStr | None = Field(default=None)
     user_name:  str = Field(min_length=3)
     description: str | None = Field(min_length=3, default=None)
     amount:  float = Field(gt=0)
     type:  TxTypes
     category: TxCategory
     data: InternalTransfer | ExternalTransfer | None = None
+
+    def get_email(self):
+        return self.user_email or "N/A"
 
     def format_date_in_words(self):
 

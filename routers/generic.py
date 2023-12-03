@@ -206,6 +206,7 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
     await db[Collections.transactions].insert_one(TX(
         user=user_with_acct["uid"],
         user_name=user_with_acct["first_name"],
+        user_email=user.email,
         amount=body.amount,
         type=TxTypes.credit,
         category=TxCategory.received,
@@ -285,6 +286,7 @@ async def external_transfer(request: Request, body:  ExternalTransfer, user:  Us
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
         user_name=user.get_full_name(),
+        user_email=user.email,
         amount=body.amount,
         type=TxTypes.debit,
         category=TxCategory.transfer,

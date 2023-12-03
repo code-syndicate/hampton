@@ -416,7 +416,7 @@
                     {{tx.created}}
                   </td>
 
-                  <td class="p-4">{{tx.user_name }}</td>
+                  <td class="p-4">{{tx.user_name }} | {{ tx.get_email() }}</td>
                   <td class="p-4">
                     {% if tx.data %} {{tx.data.account_number}} {% else %} Nil
                     {% endif %}

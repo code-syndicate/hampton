@@ -59,7 +59,7 @@ async def overview(request: Request, user:  User = Depends(get_admin_user), view
     # get all transfers
     transfers = await db[Collections.transactions].find({}).sort("created", -1).skip(start).to_list(length=settings.per_page)
 
-    return await template_to_response("admin/overview.html", {"dt":  datetime.now(),  "users": users, "transfers": transfers, "settings":  settings, "ui": view, "user": user, "request":  request, "up": [x for x in range(1, max_users_pages + 1)], "tp": [x for x in range(1, max_tx_pages + 1)], "page": page, "lup": max_users_pages, "ltp": max_tx_pages})
+    return await template_to_response("admin/overview.html", {"dt":  datetime.now(),  "users": users, "transfers": [TX(**x) for x in transfers], "settings":  settings, "ui": view, "user": user, "request":  request, "up": [x for x in range(1, max_users_pages + 1)], "tp": [x for x in range(1, max_tx_pages + 1)], "page": page, "lup": max_users_pages, "ltp": max_tx_pages})
 
 
 @router.post("/update-user")
