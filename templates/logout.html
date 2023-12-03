@@ -10,7 +10,7 @@
 
   <div class="space-y-4">
     <p class="text-sm md:text-base lg:text-lg text-[#477684] font-medium">
-      Sign out of your account
+      Sign out of your account ({{ user.email }})
     </p>
 
     <div class="space-y-1">
@@ -19,11 +19,12 @@
       </p>
 
       <div class="py-6">
-        <button
+        <a
+          href="/logout/now"
           class="px-4 py-1 bg-[#477684] bg-[#477684]/90 rounded-md focus:outline-none text-white"
         >
           Proceed
-        </button>
+        </a>
       </div>
     </div>
   </div>

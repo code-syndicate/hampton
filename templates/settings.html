@@ -16,13 +16,13 @@
         <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 "> Full Name</p>
 
-          <p class="text-base lg:text-lg text-black/90 font-medium">Jessica Jones </p>
+          <p class="text-base lg:text-lg text-black/90 font-medium"> {{user.get_full_name()}} </p>
         </div>
 
         <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 "> Joined </p>
 
-          <p class="text-base lg:text-lg text-black/90 font-medium"> Feb. 23, 2020</p>
+          <p class="text-base lg:text-lg text-black/90 font-medium"> {{user.get_joined()}} </p>
         </div>
 
      
@@ -30,14 +30,16 @@
         <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Email Address</p>
 
-          <p class="text-base lg:text-lg text-black/90 font-medium"> davechappel@gmail.com </p>
+          <p class="text-base lg:text-lg text-black/90 font-medium"> {{user.email}} </p>
         </div>
 
 
         <div class="col-span-2 md:col-span-1 bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Last login</p>
 
-          <p class="text-base lg:text-lg text-black/90 font-medium"> Jan. 22, 2022 2.32PM </p>
+          <p class="text-base lg:text-lg text-black/90 font-medium"> 
+            {{user.get_last_login()}}  
+          </p>
         </div>
 
       

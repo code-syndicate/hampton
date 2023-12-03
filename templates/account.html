@@ -16,13 +16,32 @@
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Current Ledger Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+          <p class="text-lg lg:text-xl text-black/90 font-medium">
+
+            $
+            <span
+              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.ledger_balance}})"
+            >
+              {{user.ledger_balance}}
+            </span>
+
+          </p>
         </div>
 
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Current Credit Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+          <p class="text-lg lg:text-xl text-black/90 font-medium">
+
+
+            $
+            <span
+              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.credit_balance}})"
+            >
+              {{user.credit_balance}}
+            </span>
+
+          </p>
         </div>
 
      
@@ -30,7 +49,17 @@
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Spendable Reward Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">$13,074.28</p>
+          <p class="text-lg lg:text-xl text-black/90 font-medium">
+
+
+            $
+            <span
+              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.reward_balance}})"
+            >
+              {{user.reward_balance}}
+            </span>
+
+          </p>
         </div>
 
       

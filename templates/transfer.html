@@ -1,7 +1,38 @@
 {% extends "base.html" %} {% block title %} Transfer {% endblock %} {% block
 body %}
 
-<main x-data="{ interbank : false, intrabank : true }" class="space-y-10 pb-16">
+<main
+  x-data="{ interbank : false, intrabank : true,
+  showNotify: false,
+  notifyText: '',
+  notifyType: '',
+  showProgress: false,
+  progressText: '',
+
+  getErrMsg(res) {
+
+    console.log(res)
+    if (typeof res === 'string') {
+      return res;
+    }
+  
+    if (res instanceof Error) {
+      return res?.message;
+    }
+  
+    if (typeof res === 'object') {
+      return res.detail || res.message || res.error;
+    }
+  
+   
+  
+    return 'Please correct the errors in the form'
+  }
+
+}"
+  class="space-y-10 pb-16"
+>
+  {% include 'partials/__widgets.html' %}
   <div class="space-y-4 w-full">
     <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
       Transfer
@@ -38,7 +69,103 @@ body %}
       </div>
 
       <div class="flex flex-row justify-center items-center w-full">
-        <form x-transition x-show="intrabank" class="max-w-3xl w-full">
+        <form
+          x-data="{
+
+
+              async submitForm() {
+
+                const account_number = document.querySelector('#account_number1').value
+                const amount = document.querySelector('#amount1').value
+                const description = document.querySelector('#description1').value
+                const pin = document.querySelector('#pin1').value
+
+                const data = {
+                  account_number,
+                  amount,
+                  description,
+                  pin
+                }
+
+
+                if(account_number === '' || amount === '' || description === '' || pin === '') {
+
+                  notifyText = 'Please fill in all fields';
+                  notifyType = 'error';
+                  showNotify = true;
+
+                  return;
+
+                }
+
+
+                showProgress = true;
+                progressText = 'Processing...';
+
+
+
+                try{
+                  const res = await fetch('/transfer/internal', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                  });
+
+
+                  if(res.status === 200) {
+
+                    showProgress = false;
+
+                    notifyText = 'Transfer successful';
+                    notifyType = 'success';
+                    showNotify = true;
+
+                    setTimeout(() => {
+                      window.location.href = '/dashboard';
+                    }, 2000);
+
+
+
+                  } else {
+                  const json = await res.json();
+
+                    showProgress = false;
+
+                    notifyText = getErrMsg(json) || 'Unable to complete transfer';
+                    notifyType = 'error';
+                    showNotify = true;
+                  }
+                  
+                }
+
+                catch(err){
+                  showProgress = false;
+
+                  notifyText = 'Something went wrong';
+                  notifyType = 'error';
+                  showNotify = true;
+
+                  console.log(err);
+                }
+
+
+                
+
+
+
+
+                
+
+              }
+
+        }"
+          x-transition
+          x-show="intrabank"
+          @submit.prevent="submitForm()"
+          class="max-w-3xl w-full"
+        >
           <legend>
             <p
               class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold"
@@ -62,7 +189,9 @@ body %}
           </div>
 
           <div class="space-y-2">
-            <label for="amount" class="text-sm text-gray-400"> Amount </label>
+            <label for="amount" class="text-sm text-gray-400">
+              Amount ($)
+            </label>
 
             <input
               type="text"
@@ -143,7 +272,7 @@ body %}
               @change="handleTransactionMethodChange($event)"
               type="text"
               name="account_number"
-              id="account_number2"
+              id="account_number"
               class="appearance-none w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-[#477684]"
             >
               <option aria-readonly="true">Select method</option>
@@ -155,7 +284,9 @@ body %}
           </div>
 
           <div class="space-y-2">
-            <label for="amount" class="text-sm text-gray-400"> Amount </label>
+            <label for="amount" class="text-sm text-gray-400">
+              Amount ($)
+            </label>
 
             <input
               type="text"

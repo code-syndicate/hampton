@@ -1,6 +1,15 @@
 <div
   class="bg-white rounded-xl w-full overflow-scroll max-h-[75vh] max-w-[99%]"
 >
+  {% if not txs %}
+  <div class="w-full flex flex-col justify-center items-center space-y-4 py-16">
+    <img src="/static/images/empty.png" alt="empty" class="w-24" />
+
+    <p class="text-lg text-gray-400 font-medium">No transaction history yet</p>
+  </div>
+
+  {% endif %} {% if txs %}
+
   <table class="table w-full">
     <thead class="text-[#477684] text-base text-center w-full">
       <th class="py-6 pl-6 text-base text-left whitespace-nowrap">Name</th>
@@ -59,4 +68,6 @@
       </template>
     </tbody>
   </table>
+
+  {% endif %}
 </div>

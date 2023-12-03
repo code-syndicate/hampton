@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% include 'partials/__includes.html' %}
 
-    <title>Log In - {{settings.app_name}}</title>
+    <title>Sign Up - {{settings.app_name}}</title>
   </head>
   <body
     x-data="{
@@ -54,19 +54,28 @@
             const email  = document.querySelector('input[name=email]').value;
             const password  = document.querySelector('input[name=password]').value;
 
-            if (email && password) {
+            const password2 = document.querySelector('input[name=password2]').value;
+            const firstName = document.querySelector('input[name=firstName]').value;
+
+            const lastName = document.querySelector('input[name=lastName]').value;
+           
+
+            if ( email && password && password2 && firstName && lastName ) {
                 const data = {
                     email,
-                    password
+                    password,
+                    password2,
+                    firstName,
+                    lastName
                 }
 
 
                 showProgress = true;
-                progressText = 'Signing in...';
+                progressText = 'Signing up...';
 
 
                 try{
-                  const res = await fetch('/log-in', {
+                  const res = await fetch('/sign-up', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -77,15 +86,14 @@
                   const json = await res.json();
 
                   if(res.status === 200) {
-
                     showProgress = false;
 
-                    notifyText = 'Signed in successfully';
+                    notifyText = 'Signed up successfully';
                     notifyType = 'success';
                     showNotify = true;
 
                     setTimeout(() => {
-                      window.location.href = '/dashboard';
+                      window.location.href = '/log-in';
                     }, 2000);
 
 
@@ -93,7 +101,7 @@
                   } else {
                     showProgress = false;
 
-                    notifyText = getErrMsg(json) || 'Invalid credentials';
+                    notifyText = getErrMsg(json) || 'An error occured';
                     notifyType = 'error';
                     showNotify = true;
                   }
@@ -128,10 +136,42 @@
           <legend
             class="text-2xl font-bold lg:text-3xl text-[#1D4354] py-4 text-left"
           >
-            Hi, Welcome Back!
+            Create an account
           </legend>
 
-          <div class="space-y-8 lg:space-y-12 max-w-md">
+          <div class="space-y-2 lg:space-y-4 max-w-md">
+            <div
+              class="flex flex-col justify-start items-start space-y-4 w-full"
+            >
+              <label class="text-sm font-medium text-gray-600">
+                First Name
+              </label>
+
+              <input
+                type="text"
+                required
+                name="firstName"
+                placeholder="First Name"
+                class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+              />
+            </div>
+
+            <div
+              class="flex flex-col justify-start items-start space-y-4 w-full"
+            >
+              <label class="text-sm font-medium text-gray-600">
+                Last Name
+              </label>
+
+              <input
+                type="text"
+                required
+                name="lastName"
+                placeholder="Last Name"
+                class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+              />
+            </div>
+
             <div
               class="flex flex-col justify-start items-start space-y-4 w-full"
             >
@@ -154,19 +194,9 @@
             }"
               class="flex flex-col justify-start items-start space-y-4 w-full"
             >
-              <div class="flex flex-row justify-between w-full">
-                <label class="text-sm font-medium text-gray-600">
-                  Password
-                </label>
-
-                <a href="/forgot-password">
-                  <span
-                    class="text-[#CBB55C] hover:underline text-sm hover:cursor-pointer"
-                  >
-                    Forgot password?
-                  </span>
-                </a>
-              </div>
+              <label class="text-sm font-medium text-gray-600">
+                Password
+              </label>
 
               <div class="relative w-full">
                 <input
@@ -191,12 +221,53 @@
               </div>
             </div>
 
+            <div
+              x-data="{
+            showPassword: false,
+          }"
+              class="flex flex-col justify-start items-start space-y-4 w-full"
+            >
+              <label class="text-sm font-medium text-gray-600">
+                Confirm Password
+              </label>
+
+              <div class="relative w-full">
+                <input
+                  required
+                  x-bind:type="showPassword ? 'text' : 'password'"
+                  name="password2"
+                  placeholder="Confirm password"
+                  class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
+                />
+
+                <div
+                  x-on:click="showPassword = !showPassword"
+                  class="absolute z-10 top-1/2 -translate-y-1/2 right-4 text-gray-600 hover:cursor-pointer"
+                >
+                  <span x-show="!showPassword" class="fa fa-eye text-lg"></span>
+
+                  <span
+                    x-show="showPassword"
+                    class="fa fa-eye-slash text-lg"
+                  ></span>
+                </div>
+              </div>
+            </div>
+
+            <a href="/log-in">
+              <span
+                class="text-[#CBB55C] hover:underline text-sm hover:cursor-pointer"
+              >
+                Log in?
+              </span>
+            </a>
+
             <button
               type="submit"
               role="form"
               class="py-4 block rounded-xl w-full px-4 text-white text-center bg-[#F3B600] hover:bg-[#F3B600]/90"
             >
-              Sign in
+              Sign up
             </button>
           </div>
         </form>

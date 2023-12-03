@@ -1,4 +1,4 @@
-from pydantic import HttpUrl, AnyUrl
+from pydantic import HttpUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     db_name: str = "hamon_credit_nion"
     allowed_origins: list[HttpUrl] = ["http://127.0.0.1:7004"]
     base_url: str = "http://localhost:8002"
-    db_url: AnyUrl = "mongodb://localhost:4000"
+    db_url: str = "mongodb://localhost:4000"
     db_username: str = "default"
     db_password: str = "root"
     password_salt: str = "iamasalt"

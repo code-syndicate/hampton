@@ -4,7 +4,7 @@ body %}
 <main class="space-y-10">
   <div class="space-y-4">
     <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
-      Hi James Andrew
+      Hi {{user.first_name}} {{user.last_name}}
     </p>
 
     <div class="space-y-1">
@@ -19,7 +19,7 @@ body %}
           <p class="text-sm text-gray-400">Account Number</p>
 
           <p class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium">
-            01275395819
+            {{user.account_number}}
           </p>
 
           <div class="hidden lg:block text-2xl text-gray-400">
@@ -32,7 +32,12 @@ body %}
           <p class="text-sm text-gray-400">Total Account Balance</p>
 
           <p class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium">
-            $123,519.28
+            $
+            <span
+              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.balance}})"
+            >
+              {{user.balance}}
+            </span>
           </p>
 
           <div class="hidden lg:block text-2xl text-gray-400">
