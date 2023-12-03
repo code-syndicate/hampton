@@ -19,8 +19,8 @@ class UserIn(BaseModel):
     first_name: str = Field(min_length=2, max_length=50, alias="firstName")
     last_name: str = Field(min_length=2, max_length=50, alias="lastName")
     email:  EmailStr
-    password: str = Field(min_length=8, max_length=25)
-    password2: str = Field(min_length=8, max_length=25, alias="password2")
+    password: str
+    password2: str
 
 
 class User(BaseModel):
@@ -53,14 +53,14 @@ class User(BaseModel):
 
 
 class ChangePasswordModel(BaseModel):
-    current_password:  str = Field(min_length=8)
-    password1:  str = Field(min_length=8)
-    password2:  str = Field(min_length=8)
+    current_password:  str
+    password1:  str
+    password2:  str
 
 
 class LogInModel(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=8, max_length=25)
+    password: str
 
 
 class InternalTransfer(BaseModel):
