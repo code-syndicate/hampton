@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from models.settings import Settings
 from routers.generic import router as generic_router
+from routers.admin import router as admin_router
 from utils.deps import get_auth_user_middleware
 
 
@@ -45,6 +46,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 app.include_router(generic_router, tags=["Generic"], )
+app.include_router(admin_router, tags=["Admin"], )
 
 
 app.add_middleware(CORSMiddleware, allow_origins=settings.allowed_origins,

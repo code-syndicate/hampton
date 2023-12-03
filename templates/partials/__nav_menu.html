@@ -97,6 +97,19 @@
         <span x-text="item.name"></span>
       </li>
     </template>
+
+    {% if user.is_admin %}
+
+    <li
+      class="flex justify-start text-sm font-medium items-center space-x-4 cursor-pointer text-red-500"
+      :class="{'text-yellow-500': window.location.pathname === '/admin', ' hover:text-gray-500 hover:cursor-pointer' : ! (window.location.pathname === '/admin/overview') }"
+      @click="window.location.href = '/admin/overview'"
+    >
+      <i class="fas fa-user-shield"></i>
+      <span>Admin</span>
+    </li>
+
+    {% endif %}
   </ul>
 </div>
 

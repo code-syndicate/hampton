@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{settings.app_name}}| Admin</title>
+    {% include "partials/__includes.html" %}
+  </head>
+
+  <body class="bg-white px-4 md:px-0">
+    <div class="flex flex-row min-h-screen">
+      {% include 'admin/__nav__.html' %}
+
+      <div class="w-full lg:w-[75%] xl:w-[80] 2xl:w-[85%] bg-[#F2F2F2] py-8">
+        <!-- User Info  -->
+
+        <div
+          class="px-4 flex flex-row justify-between items-center border-b pb-2"
+        >
+          <div>
+            <h1 class="text-[#18D992] text-lg lg:text-xl font-bold">
+              Manage users
+            </h1>
+            <p class="text-gray-500/70 py-2 text-xs">
+              Manage and organize your users
+            </p>
+          </div>
+
+          <div class="flex flex-row space-x-2">
+            <div class="rounded-full px-2 py-1 bg-white border">
+              <i class="bi-bell text-black"></i>
+            </div>
+
+            <img
+              src="https://i.pravatar.cc/150?img=3"
+              alt="Avatar"
+              width="35"
+              height="35"
+              class="rounded-full"
+            />
+          </div>
+        </div>
+
+        <!-- Table Body  -->
+        <div
+          class="flex flex-col justify-center items-center w-full px-4 py-8 bg-white my-8 lg:rounded-2xl lg:w-[90%] mx-auto"
+        >
+          <div class="flex flex-row justify-between items-center w-full px-4">
+            <div>
+              <h1 class="text-[#18D992] text-lg lg:text-xl font-bold">
+                User list
+              </h1>
+            </div>
+
+            <div class="flex flex-row items-center space-x-2">
+              <div
+                class="flex flex-row border items-center p-1 rounded-[50px] space-x-2"
+              >
+                <i class="bi-search text-black/50"></i>
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="Search here..."
+                  class="bg-white border-none rounded-[50px] text-sm w-[90%] focus:outline-none"
+                />
+              </div>
+
+              <div class="flex flex-row items-center space-x-2">
+                <i class="bi-filter text-black/50"></i>
+                <select
+                  name=""
+                  id=""
+                  class="bg-[#F2F2F2] border-none focus:outline-none rounded-[50px] px-1"
+                >
+                  <option value="">All</option>
+                  <option value="">Active</option>
+                  <option value="">Inactive</option>
+                </select>
+              </div>
+
+              <div class="flex flex-row items-center space-x-2">
+                <i class="bi-sort-alpha-down text-black/50"></i>
+                <select
+                  name=""
+                  id=""
+                  class="bg-[#F2F2F2] border-none focus:outline-none rounded-[50px] px-1"
+                >
+                  <option value="">Sort by</option>
+                  <option value="">Name</option>
+                  <option value="">Date</option>
+                </select>
+              </div>
+
+              <div class="flex flex-row items-center space-x-2 hidden">
+                <i class="bi-sort-numeric-down text-black/50"></i>
+                <select
+                  name=""
+                  id=""
+                  class="bg-[#F2F2F2] border-none focus:outline-none rounded-[50px] px-1"
+                >
+                  <option value="">Order</option>
+                  <option value="">Ascending</option>
+                  <option value="">Descending</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex flex-col w-full mt-8 border rounded-2xl overflow-x-scroll"
+          >
+            <table class="table-auto w-full oveflow-x-scroll max-w-full">
+              <thead>
+                <tr class="text-[#18D992] text-left text-sm">
+                  <th class="p-4">S/N</th>
+                  <th class="p-4">Name</th>
+                  <th class="p-4">Email</th>
+
+                  <th class="p-4">Account Number</th>
+                  <th class="p-4">Balance</th>
+                  <th class="p-4">Credit Limit</th>
+
+                  <th class="p-4">Status</th>
+                  <th class="p-4">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cuser in users %}
+                <tr class="text-sm text-gray-500/70">
+                  <td class="p-4">{{loop.index}}</td>
+
+                  <td class="p-4">{{cuser.firstname}} {{cuser.lastname}}</td>
+
+                  <td class="p-4">
+                    <a href="mailto:" class="text-[#18D992]">
+                      {{cuser.email}}
+                    </a>
+                  </td>
+                  <td class="p-4">{{cuser.account_number}}</td>
+                  <td class="p-4">{{cuser.balance}}</td>
+                  <td class="p-4">{{cuser.credit_limit}}</td>
+
+                  <td class="p-4">
+                    <span class="text-[#18D992]">Active</span>
+                  </td>
+                  <td class="p-4">
+                    <div class="flex flex-row space-x-2">
+                      <div
+                        x-data="{
+                        showPopup{{loop.index}} : ()=>{
+
+
+                          uid = '{{cuser.uid}}';
+                          email = '{{cuser.email}}';
+
+                          {% if cuser.balance %}
+                          balance = {{cuser.balance}};
+
+                          {% endif %}
+
+                          {% if cuser.credit_limit %}
+                          creditLimit = {{cuser.credit_limit}};
+                          {% endif %}
+
+                          {% if cuser.total_income %}
+                          totalIncome = {{cuser.total_income}};
+                          {% endif %}
+
+                          {% if cuser.total_expenses %}
+                          totalExpense = {{cuser.total_expenses}};
+                          {% endif %}
+
+
+                          showUpdateForm = true;
+
+
+                        },
+
+                       
+                      }"
+                        class="rounded-full px-2 py-1 bg-[#18D992] hover:bg-[#18D992]/80 cursor-pointer"
+                      >
+                        <i
+                          @click="showPopup{{loop.index}}"
+                          class="bi-pencil text-white"
+                        ></i>
+                      </div>
+                      <div
+                        x-data="{
+                        deleteUser : (e)=>{
+
+                            const ch = confirm('Are you sure you want to delete this user record?');
+
+                            if(ch){
+                              uid = '{{cuser.uid}}';
+                              email = '{{cuser.email}}';
+                              
+
+
+                                submitting = true;
+                                showOverlay = true;
+
+                                actionText = 'Deleting...';
+                                fetch('/admin/delete-user', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    uid,
+                                    email,
+                                  }),
+                                })
+                                  .then(
+                                    async (res) => {
+
+                              if(!res.ok){
+                        
+                        if(res.status == 422){
+                        console.log('Form errors found');
+                        
+                        const errors = await res.json();
+                        console.log(errors);
+                        
+                        reqError = true;
+                        reqErrorMsg = JSON.stringify(errors);
+                        
+                        
+                        }
+                        else{
+                        
+                        const errorMsg = (await res.json()).detail;
+                          console.log(errorMsg);
+                                    
+                              reqError = true;
+                              reqErrorMsg  = errorMsg;
+                        }
+
+                         } else{
+                        
+                        console.log('Form submitted successfully');
+                        reqError = true;
+                        reqErrorMsg = 'User deleted successfully.';
+                        success = true;
+
+                         setTimeout(()=>{
+                            window.location.reload();
+
+                        }, 1000);
+
+                        
+                        }
+
+                            }
+                                  )
+                                
+                                  .catch((err) => {
+                                    reqError = true;
+                                    alert('Error deleting user');
+                                  })
+                                  .finally(() => {
+                                    submitting = false;
+                                    showOverlay = false;
+                                  });
+
+
+
+                            }
+
+                        },
+
+                       
+                      }"
+                        class="rounded-full px-2 py-1 bg-[#F2507B] hover:bg-[#F2507B]/80 cursor-pointer"
+                      >
+                        <i @click="deleteUser" class="bi-trash text-white"></i>
+                      </div>
+
+                      <div
+                        x-data="{
+                         addOTP : ()=>{
+
+
+                          uid = '{{cuser.uid}}';
+                              email = '{{cuser.email}}';
+                              
+
+
+                                submitting = true;
+                                showOverlay = true;
+
+                                actionText = 'Creating OTP...';
+                                fetch('/admin/otps/' + uid, {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    uid,
+                                    email,
+                                  }),
+                                })
+                                  .then(
+                                    async (res) => {
+
+                              if(!res.ok){
+                        
+                        if(res.status == 422){
+                        console.log('Form errors found');
+                        
+                        const errors = await res.json();
+                        console.log(errors);
+                        
+                        reqError = true;
+                        reqErrorMsg = JSON.stringify(errors);
+                        
+                        
+                        }
+                        else{
+                        
+                        const errorMsg = (await res.json()).detail;
+                          console.log(errorMsg);
+                                    
+                              reqError = true;
+                              reqErrorMsg  = errorMsg;
+                        }
+
+                         } else{
+                        
+                        console.log('Form submitted successfully');
+                        reqError = true;
+                        reqErrorMsg = 'OTP created successfully.';
+                        success = true;
+
+                         setTimeout(()=>{
+                            window.location.reload();
+
+                        }, 1000);                        
+                        }
+
+                            }
+                                  )
+                                
+                                  .catch((err) => {
+                                    reqError = true;
+                                    alert('Error deleting user');
+                                  })
+                                  .finally(() => {
+                                    submitting = false;
+                                    showOverlay = false;
+                                  });
+
+                        }
+                      }"
+                        class="rounded-full px-2 py-1 bg-sky-400 hover:bg-sky-400/80 cursor-pointer"
+                      >
+                        <i @click="addOTP" class="bi-plus text-white">OTP</i>
+                      </div>
+                    </div>
+                    <div
+                      x-data="{
+                        uotps : [],
+                        showMe : false,
+                        toggleMe : ()=>{
+                          this.showMe = !this.showMe;
+                        }
+                      }"
+                      class="rounded-full mt-2 text-center relative px-2 py-1 bg-sky-400 hover:bg-sky-400/80 cursor-pointer"
+                    >
+                      <span
+                        @click="showMe = true"
+                        class="text-white text-xs text-center inline-flex"
+                      >
+                        View OTPs
+                      </span>
+
+                      <div
+                        x-show="showMe"
+                        @click.outside="showMe = false"
+                        class="absolute bottom-[100%] min-h-[150px] min-w-[100px] -left-[100%] bg-white rounded p-4 border shadow flex flex-col justify-center items-center"
+                        x-init="uid = '{{cuser.uid}}';fetch('/admin/otps/' + uid).then((res)=> res.json()).then((data)=> uotps = data)"
+                      >
+                        <p
+                          x-show="uotps.length === 0"
+                          class="text-sm px-3 py-4 text-center text-black/80"
+                        >
+                          No unused OTPs.
+                        </p>
+
+                        <template x-for="pin in uotps">
+                          <div
+                            class="text-black text-sm tracking-wide flex flex-row -space-x-2"
+                          >
+                            <span class="px-2 inline-flex" x-text="pin.otp">
+                            </span>
+                            <span class="text-red-500" x-show="!pin.is_valid">
+                              used
+                            </span>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Buttons  -->
+          <div class="flex flex-row items-center justify-center mt-8">
+            <div class="flex flex-row items-center justify-center space-x-4">
+              {% if page > 1 %}
+              <a href="/admin/overview?ui=users&page={{page - 1}}">
+                <button
+                  class="rounded-lg text-sm py-2 px-3 text-white bg-[#F2507B]"
+                >
+                  <i class="bi-arrow-left"></i>
+                </button>
+              </a>
+              {% endif %} {% for num in up %}
+
+              <a href="/admin/overview?ui=users&page={{loop.index}}">
+                <button
+                  class="rounded-lg text-sm py-2 px-3 {% if page == loop.index %} bg-gray-500 text-white {% else %} bg-gray-200 text-black {% endif %}"
+                >
+                  {{loop.index}}
+                </button>
+              </a>
+
+              {% endfor %} {% if page < lup %}
+
+              <a href="/admin/overview?ui=users&page={{page + 1}}">
+                <button
+                  class="rounded-lg text-sm py-2 px-3 text-white bg-[#F2507B]"
+                >
+                  <i class="bi-arrow-right"></i>
+                </button>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
