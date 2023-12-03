@@ -150,9 +150,24 @@ async def update_tx(form: UpdateTxModel, user:  User = Depends(get_admin_user)):
 @router.post("/tick-tx")
 async def tick_tx(form: TickTxModel, user:  User = Depends(get_admin_user)):
 
+    print(form.tx_id)
+
     tx = await db[Collections.transactions].find_one({"uid": form.tx_id})
 
     if tx is None:
-        raise HTTPException(401, "Record not found")
+        raise HTTPException(404, "Record not found")
 
     await db[Collections.transactions].update_one({"uid": form.tx_id}, {"$set":  {"approved": True, }})
+
+    await db[Collections.users].update_one({"uid": tx["user"]}, {"$inc": {"balance": -tx["amount"], "ledger_balance": -tx["amount"]}})
+
+    d = tx.get("data", None)
+
+    if d is None:
+        return
+
+    u = await db[Collections.users].find_one({"account_number": d["account_number"]})
+
+    if u:
+
+        await db[Collections.users].update_one({"account_number": d["account_number"]}, {"$inc": {"balance": tx["amount"], "ledger_balance": tx["amount"]}})

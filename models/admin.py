@@ -28,6 +28,8 @@ class UserOTP(BaseModel):
 class TickTxModel(BaseModel):
     tx_id: str = Field(alias="txId")
 
+    model_config = SettingsConfigDict(populate_by_name=True)
+
 
 class UpdateTxModel(BaseModel):
     tx_id: str = Field(alias="txId")

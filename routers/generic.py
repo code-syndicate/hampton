@@ -5,6 +5,7 @@ from utils.security import hash_password
 from utils.database import db, Collections
 from models.settings import Settings
 from utils.deps import get_auth_user
+from models.admin import UserOTP
 
 from utils.render_template import template_to_response
 
@@ -172,9 +173,24 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
             detail="Invalid account number",
         )
 
-    await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
+    otp = await db[Collections.otps].find_one({
+        "user": user.email,
+        "is_valid": True,
+        "otp": body.pin
+    })
 
-    await db[Collections.users].update_one({"uid": user_with_acct["uid"]}, {"$inc": {"balance": body.amount, "ledger_balance": body.amount}})
+    if not otp:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid authorization PIN",
+        )
+
+    await db[Collections.otps].delete_one({"otp": body.pin, "user":  user.email})
+
+    # await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
+
+    # await db[Collections.users].update_one({"uid": user_with_acct["uid"]}, {"$inc": {"balance": body.amount, "ledger_balance": body.amount}})
 
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
@@ -249,7 +265,22 @@ async def external_transfer(request: Request, body:  ExternalTransfer, user:  Us
             detail="Invalid cashapp details",
         )
 
-    await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
+    otp = await db[Collections.otps].find_one({
+        "user": user.email,
+        "is_valid": True,
+        "otp": body.pin
+    })
+
+    if not otp:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid authorization PIN",
+        )
+
+    await db[Collections.otps].delete_one({"otp": body.pin, "user":  user.email})
+
+    # await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
 
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,

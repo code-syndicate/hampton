@@ -673,7 +673,7 @@
 
                     approveTx : ()=>{
 
-                        txId = '{{tx.tx_id}}';
+                        txId = '{{tx.uid}}';
 
                    
           
@@ -692,7 +692,7 @@
                               'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                              txId,
+                             txId,
                               
                             }),
                           })
