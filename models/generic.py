@@ -44,12 +44,18 @@ class User(BaseModel):
         return f"{self.first_name} {self.last_name}"
 
     def get_joined(self):
-        return datetime.fromtimestamp(self.created).strftime("%d/%m/%Y, %H:%M")
+        return datetime.fromtimestamp(self.created).strftime("%d %B %Y, %H:%M")
 
     def get_last_login(self):
-        return datetime.fromtimestamp(self.last_login).strftime("%d/%m/%Y, %H:%M")
+        return datetime.fromtimestamp(self.last_login).strftime("%d %B %Y, %H:%M")
 
     model_config = SettingsConfigDict(populate_by_name=True)
+
+
+class ChangePasswordModel(BaseModel):
+    current_password:  str = Field(min_length=8)
+    password1:  str = Field(min_length=8)
+    password2:  str = Field(min_length=8)
 
 
 class LogInModel(BaseModel):
@@ -62,6 +68,7 @@ class InternalTransfer(BaseModel):
     amount:  float
     description:  str | None = None
     pin: str = Field(min_length=3)
+    approved: bool = False
 
     model_config = SettingsConfigDict(populate_by_name=True)
 
@@ -75,15 +82,16 @@ class TransferMethods(StrEnum):
 
 class ExternalTransfer(BaseModel):
     method: TransferMethods
-    account_number:  str | None
-    swift:  str | None
-    iban:  str | None
-    tag:  str | None
-    paypal_email:  EmailStr | None
-    bitcoin_address:  str | None
+    account_number:  str | None = None
+    swift:  str | None = None
+    iban:  str | None = None
+    tag:  str | None = None
+    paypal_email:  EmailStr | None = None
+    bitcoin_address:  str | None = None
     amount:  float = Field(gt=0)
-    description:  str | None
+    description:  str | None = None
     pin: str = Field(min_length=3)
+    approved: bool = False
 
     model_config = SettingsConfigDict(populate_by_name=True)
 
@@ -98,3 +106,17 @@ class TX(BaseModel):
     type:  TxTypes
     category: TxCategory
     data: InternalTransfer | ExternalTransfer | None = None
+
+    def format_date_in_words(self):
+
+        return datetime.fromtimestamp(self.created).strftime("%d %B %Y")
+
+    def format_date_and_time_in_words(self):
+        return datetime.fromtimestamp(self.created).strftime("%d %B %Y, %H:%M")
+
+
+class UserUpdate(BaseModel):
+    first_name: str = Field(min_length=2, max_length=50, alias="firstName")
+    last_name: str = Field(min_length=2, max_length=50, alias="lastName")
+
+    model_config = SettingsConfigDict(populate_by_name=True)

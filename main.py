@@ -29,7 +29,9 @@ async def auth_checker(request: Request, call_next):
         "/transfer/external",
         "/settings",
         "/log-out",
-        "/logout/now"
+        "/logout/now",
+        "/profile/edit",
+        "/change-password"
 
     ]
 

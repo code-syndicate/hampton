@@ -28,44 +28,45 @@
         items: Array.from({ length: 20 }).fill(1)
       }"
     >
-      <template x-for="( item, index) in items" :key="index">
-        <tr
-          class="text-base hover:bg-gray-200 odd:bg-gray-100 hover:cursor-pointer text-black/80"
+      {% for tx in txs %}
+
+      <tr
+        class="text-base hover:bg-gray-200 odd:bg-gray-100 hover:cursor-pointer text-black/80"
+      >
+        <td class="text-base p-6 text-left">
+          <div class="w-full flex-row justify-center items-center space-x-8">
+            <span> {{tx.user_name}} </span>
+            <span
+              class="capitalize {% if tx.category == 'transfer' %} text-red-500 bg-red-100 {% else %} text-green-500 bg-green-100 {% endif %} rounded-2xl font-medium py-1 px-2 text-xs"
+            >
+              {{tx.category}}
+            </span>
+
+            <span
+              x-show="index % 2 === 0"
+              class="bg-green-100 text-green-500 rounded-2xl font-medium py-1 px-2 text-xs"
+            >
+              Received
+            </span>
+          </div>
+        </td>
+
+        <td class="text-base pr-6 text-left capitalize">{{tx.type}}</td>
+
+        <td class="text-base pr-6 text-left text-gray-400 font-medium truncate">
+          {{tx.uid}}
+        </td>
+
+        <td class="text-base pr-6 text-left">$ {{tx.amount}}</td>
+
+        <td
+          class="text-sm pr-6 font-medium whitespace-nowrap text-left text-gray-400"
         >
-          <td class="text-base p-6 text-left">
-            <div class="w-full flex-row justify-center items-center space-x-8">
-              <span> James Greer </span>
-              <span
-                x-show="index % 2 === 1"
-                class="bg-red-100 text-red-500 rounded-2xl font-medium py-1 px-2 text-xs"
-              >
-                Transfer
-              </span>
+          {{tx.format_date_in_words()}}
+        </td>
+      </tr>
 
-              <span
-                x-show="index % 2 === 0"
-                class="bg-green-100 text-green-500 rounded-2xl font-medium py-1 px-2 text-xs"
-              >
-                Received
-              </span>
-            </div>
-          </td>
-
-          <td class="text-base pr-6 text-left">Credit</td>
-
-          <td class="text-base pr-6 text-left text-gray-400 font-medium">
-            837737474774
-          </td>
-
-          <td class="text-base pr-6 text-left">$12,34</td>
-
-          <td
-            class="text-sm pr-6 font-medium whitespace-nowrap text-left text-gray-400"
-          >
-            12th Nov. 2023
-          </td>
-        </tr>
-      </template>
+      {% endfor %}
     </tbody>
   </table>
 

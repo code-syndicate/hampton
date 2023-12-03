@@ -54,6 +54,8 @@ async def log_in_post(body:  LogInModel, response:  Response):
             detail="Invalid credentials",
         )
 
+    await db[Collections.users].update_one({"uid": user["uid"]}, {"$set": {"last_login": get_utc_timestamp()}})
+
     response.set_cookie(settings.session_cookie_name,
                         user["uid"], max_age=1800)
 
@@ -116,11 +118,13 @@ async def logout(request: Request, user:  User = Depends(get_auth_user)):
 
 
 @router.get("/logout/now")
-async def logout_now(request: Request, user:  User = Depends(get_auth_user)):
+async def logout_now(request: Request, response: Response, user:  User = Depends(get_auth_user)):
 
     request.cookies.clear()
 
-    return RedirectResponse(url=request.url_for("log_in"))
+    response.delete_cookie(settings.session_cookie_name)
+
+    return await template_to_response("login.html", {"request": request, "user": user})
 
 
 @router.get("/settings")
@@ -197,13 +201,7 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
 
 
 @router.post("/transfer/external")
-async def internal_transfer(request: Request, body:  InternalTransfer, user:  User = Depends(get_auth_user),):
-
-    if body.account_number == user.account_number:
-        raise HTTPException(
-            status_code=400,
-            detail="You cannot transfer to yourself",
-        )
+async def external_transfer(request: Request, body:  ExternalTransfer, user:  User = Depends(get_auth_user),):
 
     if body.amount > user.balance:
         raise HTTPException(
@@ -217,23 +215,41 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
             detail="Invalid amount",
         )
 
-    if not is_number(body.account_number):
+    if body.method == TransferMethods.bank and not (body.iban and body.swift and body.account_number):
+
+        if not is_number(body.account_number):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid account number",
+            )
+
         raise HTTPException(
             status_code=400,
-            detail="Invalid account number",
+            detail="Invalid bank details",
         )
 
-    user_with_acct = await db[Collections.users].find_one({"account_number": body.account_number})
+    if body.method == TransferMethods.paypal and not body.paypal_email:
 
-    if not user_with_acct:
         raise HTTPException(
             status_code=400,
-            detail="Invalid account number",
+            detail="Invalid paypal details",
+        )
+
+    if body.method == TransferMethods.bitcoin and not body.bitcoin_address:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid bitcoin details",
+        )
+
+    if body.method == TransferMethods.cashapp and not body.tag:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid cashapp details",
         )
 
     await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
-
-    await db[Collections.users].update_one({"uid": user_with_acct["uid"]}, {"$inc": {"balance": body.amount, "ledger_balance": body.amount}})
 
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
@@ -241,19 +257,9 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
         amount=body.amount,
         type=TxTypes.debit,
         category=TxCategory.transfer,
-        description=f"Transfer to {user_with_acct['account_number']}",
+        description=f"Transfer to {body.method}",
         created=get_utc_timestamp(),
         data=body
-    ).model_dump())
-
-    await db[Collections.transactions].insert_one(TX(
-        user=user_with_acct["uid"],
-        user_name=user_with_acct["first_name"],
-        amount=body.amount,
-        type=TxTypes.credit,
-        category=TxCategory.received,
-        description=f"Transfer from {user.account_number}",
-        created=get_utc_timestamp(),
     ).model_dump())
 
     return await template_to_response("transfer.html", {"request": request, "user": user})
@@ -265,8 +271,16 @@ async def transactions(request: Request, user:  User = Depends(get_auth_user)):
 
 
 @router.get("/profile/edit")
-async def edit_profile(request: Request):
-    return await template_to_response("edit-profile.html", {"request": request})
+async def edit_profile(request: Request,  user:  User = Depends(get_auth_user)):
+    return await template_to_response("edit-profile.html", {"request": request, "user": user})
+
+
+@router.post("/profile/edit")
+async def edit_profile_post(request: Request, body: UserUpdate,  user:  User = Depends(get_auth_user)):
+
+    await db[Collections.users].update_one({"uid": user.uid}, {"$set": {"first_name": body.first_name, "last_name": body.last_name}})
+
+    return await template_to_response("settings.html", {"request": request, "user": user})
 
 
 @router.get("/forgot-password")
@@ -275,5 +289,32 @@ async def forgot_password(request: Request):
 
 
 @router.get("/change-password")
-async def change_password(request: Request):
-    return await template_to_response("change-password.html", {"request": request})
+async def change_password(request: Request,  user:  User = Depends(get_auth_user)):
+    return await template_to_response("change-password.html", {"request": request, "user": user})
+
+
+@router.post("/change-password")
+async def change_password_post(request: Request, body: ChangePasswordModel, user:  User = Depends(get_auth_user)):
+
+    if not user.password_hash == hash_password(body.current_password):
+        raise HTTPException(
+            status_code=400,
+            detail="Incorrect password",
+        )
+
+    if not body.password1 == body.password2:
+
+        raise HTTPException(
+            status_code=400,
+            detail="New passwords must match!",
+        )
+
+    await db[Collections.users].update_one({
+        "uid": user.uid
+    }, {
+        "$set": {
+            "password_hash":  hash_password(body.password1)
+        }
+    })
+
+    return await template_to_response("change-password.html", {"request": request, "user": user})

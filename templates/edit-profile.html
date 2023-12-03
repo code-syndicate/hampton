@@ -1,7 +1,38 @@
 {% extends "base.html" %} {% block title %} Edit Profile {% endblock %} {% block
 body %}
 
-<main x-data="{ interbank : false, intrabank : true }" class="space-y-10 pb-16">
+<main
+  x-data="{ interbank : false, intrabank : true,
+  showNotify: false,
+  notifyText: '',
+  notifyType: '',
+  showProgress: false,
+  progressText: '',
+
+  getErrMsg(res) {
+
+    console.log(res)
+    if (typeof res === 'string') {
+      return res;
+    }
+  
+    if (res instanceof Error) {
+      return res?.message;
+    }
+  
+    if (typeof res === 'object') {
+      return res.detail || res.message || res.error;
+    }
+  
+   
+  
+    return 'Please correct the errors in the form'
+  }
+
+}"
+  class="space-y-10 pb-16"
+>
+  {% include 'partials/__widgets.html' %}
   <div class="space-y-4 w-full">
     <p class="text-base md:text-lg lg:text-lg text-[#477684] font-semibold">
       Profile
@@ -22,6 +53,88 @@ body %}
         <form
           x-transition
           class="max-w-3xl w-full flex flex-col space-y-4 justify-center items-start"
+          x-data="{
+            async submitForm(){
+
+              
+              const first_name = document.querySelector('#first_name').value
+              const last_name = document.querySelector('#last_name').value
+
+              const data = {
+               first_name, last_name
+              }
+
+
+              if( !first_name || !last_name){
+
+                notifyText = 'Please fill in all fields';
+                notifyType = 'error';
+                showNotify = true;
+
+                return;
+              }
+
+
+              showProgress = true;
+              progressText = 'Updating your info...';
+
+
+
+
+              try{
+                const res = await fetch('/profile/edit', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data),
+                });
+
+
+                if(res.status === 200) {
+
+                  showProgress = false;
+
+                  notifyText = 'Profile update successful';
+                  notifyType = 'success';
+                  showNotify = true;
+
+                  setTimeout(() => {
+                    window.location.href = '/settings';
+                  }, 2000);
+
+
+
+                } else {
+                const json = await res.json();
+
+                  showProgress = false;
+
+                  notifyText = getErrMsg(json) || 'Unable to update your profile';
+                  notifyType = 'error';
+                  showNotify = true;
+                }
+                
+              }
+
+              catch(err){
+                showProgress = false;
+
+                notifyText = 'Something went wrong';
+                notifyType = 'error';
+                showNotify = true;
+
+                console.log(err);
+              }
+             
+
+
+
+
+
+            }
+          }"
+          @submit.prevent="submitForm()"
         >
           <div class="relative space-y-4 w-full">
             <label class="text-sm font-medium text-gray-600">
@@ -31,6 +144,7 @@ body %}
               required
               type="text"
               name="firstName"
+              id="first_name"
               placeholder="Enter your first name"
               class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
             />
@@ -42,6 +156,7 @@ body %}
               required
               type="text"
               name="lastName"
+              id="last_name"
               placeholder="Enter your last name"
               class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
             />
@@ -55,7 +170,7 @@ body %}
               required
               type="email"
               name="email"
-              value="user@email.com"
+              value="{{user.email}}"
               readonly
               disabled
               class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
