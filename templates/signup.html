@@ -150,6 +150,7 @@
               <input
                 type="text"
                 required
+                minlength="3"
                 name="firstName"
                 placeholder="First Name"
                 class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
@@ -166,6 +167,7 @@
               <input
                 type="text"
                 required
+                minlength="3"
                 name="lastName"
                 placeholder="Last Name"
                 class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
@@ -203,6 +205,8 @@
                   required
                   x-bind:type="showPassword ? 'text' : 'password'"
                   name="password"
+                  minlength="8"
+                  maxlength="25"
                   placeholder="Password"
                   class="rounded-xl text-sm placeholder:text-gray-300 py-4 pl-8 border block w-full focus:outline-none"
                 />
@@ -234,6 +238,8 @@
               <div class="relative w-full">
                 <input
                   required
+                  minlength="8"
+                  maxlength="25"
                   x-bind:type="showPassword ? 'text' : 'password'"
                   name="password2"
                   placeholder="Confirm password"
