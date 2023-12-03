@@ -27,6 +27,10 @@
       txId : '',
       created : '',
       txcat : '',
+      category : ''
+
+    
+    
 
     }"
       class="flex flex-row min-h-screen"
@@ -44,8 +48,11 @@
                           submitting = true;
                           showOverlay = true;
 
+                          showProgress = true;
 
-                          actionText = 'Updating...';
+
+
+                          progressText = 'Updating...';
 
                           fetch('/admin/update-tx', {
                             method: 'POST',
@@ -54,13 +61,12 @@
                             },
                             body: JSON.stringify({
                               txId,
-                              sender,
-                              receiver,
+                            
                               amount,
-                              scope : txtype,
-                              status,
+                               txtype,
+                             
                               created,
-                              txtype : txcat
+                              category
                             }),
                           })
                             .then( async (res) => {
@@ -69,22 +75,31 @@
                         
                         if(res.status == 422){
                         console.log('Form errors found');
-                        
+                        showProgress = false;
+                          
                         const errors = await res.json();
                         console.log(errors);
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
                         
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error'
                         
                         }
                         else{
                         
                         const errorMsg = (await res.json()).detail;
                           console.log(errorMsg);
-                                    
+                        showProgress = false;
+                                  
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+
+                              showNotify = true;
+                              notifyText = reqErrorMsg;
+                              notifyType = 'error'
                         }
 
                          } else{
@@ -93,6 +108,12 @@
                         reqError = true;
                         reqErrorMsg = 'Transfer record updated successfully.';
                         success = true;
+
+                        showProgress = false;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'success'
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -114,6 +135,14 @@
 
                         reqLoading = false;
                         showOverlay = false;
+
+                        showProgress = false;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'success'
+
+
                         },
 
 
@@ -175,7 +204,7 @@
                 />
               </div>
 
-              <div class="w-full">
+              <!-- <div class="w-full">
                 <label for="sender" class="text-sm text-gray-500">Sender</label>
                 <input
                   type="text"
@@ -199,7 +228,7 @@
                   id="receiver"
                   class="w-full tracking-wide border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
                 />
-              </div>
+              </div> -->
 
               <div class="w-full">
                 <label for="amount" class="text-sm text-gray-500">Amount</label>
@@ -223,37 +252,22 @@
                   x-model="txtype"
                   class="w-full tracking-wide text-left border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
                 >
-                  <option value="IN">Internal</option>
-                  <option value="OUT">External</option>
+                  <option value="debit">Debit</option>
+                  <option value="credit">Credit</option>
                 </select>
               </div>
 
               <div class="w-full">
                 <label for="status" class="text-sm text-gray-500">
-                  Status
+                  Category
                 </label>
                 <select
-                  name="status"
-                  x-model="status"
+                  name="category"
+                  x-model="category"
                   class="w-full tracking-wide text-left border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
                 >
-                  <option value="SUCCESS">Success</option>
-                  <option value="PENDING">Pending</option>
-                  <option value="FAILED">Failed</option>
-                </select>
-              </div>
-
-              <div class="w-full">
-                <label for="txcat" class="text-sm text-gray-500">
-                  Transfer Category
-                </label>
-                <select
-                  name="txcat"
-                  x-model="txcat"
-                  class="w-full tracking-wide text-left border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
-                >
-                  <option value="DEBIT">Sent</option>
-                  <option value="CREDIT">Income</option>
+                  <option value="received">Received</option>
+                  <option value="transfer">Transfer</option>
                 </select>
               </div>
 
@@ -309,7 +323,7 @@
           <div class="flex flex-row justify-between items-center w-full px-4">
             <div>
               <h1 class="text-[#18D992] text-lg lg:text-xl font-bold">
-                Transfers
+                Transactions
               </h1>
             </div>
 
@@ -369,7 +383,7 @@
           </div>
 
           <div
-            class="flex flex-col w-full mt-8 border overflow-x-scroll max-w-[99vw] rounded-2xl"
+            class="flex flex-col w-full mt-8 border overflow-scroll max-w-[99vw] max-h-[70vh] rounded-2xl"
           >
             <table class="table-auto w-full max-w-full">
               <thead>
@@ -378,12 +392,15 @@
                   <th class="p-4">Created</th>
 
                   <th class="p-4">Sender</th>
-                  <th class="p-4">Receiver</th>
+                  <th class="p-4">Receiver (Acct. No)</th>
 
                   <th class="p-4">Amount</th>
                   <th class="p-4">Type</th>
+                  <th class="p-4">Category</th>
+                  <th class="p-4">Method (target)</th>
 
                   <th class="p-4">Status</th>
+
                   <th class="p-4">Actions</th>
                 </tr>
               </thead>
@@ -399,32 +416,42 @@
                     {{tx.created}}
                   </td>
 
-                  <td class="p-4">{{tx.sender}}</td>
+                  <td class="p-4">{{tx.user_name }}</td>
                   <td class="p-4">
-                    {% if tx.receiver %} {{tx.receiver}} {% else %}
-                    {{tx.receiver_account_name}} {% endif %}
+                    {% if tx.data %} {{tx.data.account_number}} {% else %} Nil
+                    {% endif %}
                   </td>
 
                   <td class="p-4">${{tx.amount}}</td>
-                  <td class="p-4">
-                    {% if tx.scope == "IN" %} INTERNAL {% elif tx.scope == "OUT"
-                    %} EXTERNAL {% endif %}
+                  <td class="p-4 capitalize">{{ tx.type }}</td>
+
+                  <td class="p-4 capitalize">{{ tx.category }}</td>
+
+                  {% if tx.data.method %}
+
+                  <td class="p-4 capitalize">
+                    {{ tx.data.method }} {% if tx.data.method == 'bank' %}
+                    ({{tx.data.account_number}}) {% elif tx.data.method ==
+                    'cashapp' %} ({{tx.data.tag}}) {% elif tx.data.method ==
+                    'biitcoin' %} ({{tx.data.bitcoin_address}}) {% elif
+                    tx.data.method == 'paypal' %} ({{tx.data.paypal_email}}) {%
+                    endif %}
                   </td>
 
-                  {% if (tx.status == "PENDING" or tx.status == "FAILED") %}
+                  {% else %}
+
+                  <td class="p-4">Nil</td>
+
+                  {% endif %} {% if not tx.approved %}
 
                   <td class="p-4">
-                    <span class="text-[#F2507B] #F2507B">
-                      {{ tx.status }}
-                    </span>
+                    <span class="text-[#F2507B] #F2507B"> Pending </span>
                   </td>
 
                   {% else %}
 
                   <td class="p-4">
-                    <span class="text-[#18D992] #F2507B">
-                      {{ tx.status }}
-                    </span>
+                    <span class="text-[#18D992] #F2507B"> Approved </span>
                   </td>
 
                   {% endif %}
@@ -444,11 +471,10 @@
                         receiver = '{{tx.receiver_account_name}}';
                         {% endif %}
 
-                        txId = '{{tx.tx_id}}';
+                        txId = '{{tx.uid}}';
                         amount = {{tx.amount}};
-                        txtype = '{{tx.scope}}';
-                        status = '{{tx.status}}';
-                        txcat = '{{tx.txtype}}';
+                        txtype = '{{tx.type}}';
+                        category = '{{tx.category}}';
                         
 
                         showForm = true;
@@ -465,10 +491,15 @@
                       if(!ch)return;
 
 
-                         txId = '{{tx.tx_id}}';
+                         txId = '{{tx.uid}}';
           
                           submitting = true;
                           showOverlay = true;
+
+                          showProgress = true;
+                          progressText = 'Deleting...';
+
+
 
 
                           actionText = 'Deleting...';
@@ -495,6 +526,12 @@
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
+
+                        showProgress = false;
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error'
+                        
                         
                         
                         }
@@ -505,6 +542,11 @@
                                     
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+
+                              showProgress = false;
+                              showNotify = true;
+                              notifyText = reqErrorMsg;
+                              notifyType = 'error'
                         }
 
                          } else{
@@ -513,6 +555,11 @@
                         reqError = true;
                         reqErrorMsg = 'Transfer record deleted successfully.';
                         success = true;
+
+                        showProgress = false;
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'success'
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -534,6 +581,11 @@
 
                         reqLoading = false;
                         showOverlay = false;
+
+                        showProgress = false;
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error'
 
 
                     },
@@ -628,6 +680,9 @@
                           submitting = true;
                           showOverlay = true;
 
+                          showProgress = true;
+                          progressText = 'Approving';
+
 
                           actionText = 'Approving...';
 
@@ -644,6 +699,8 @@
                             .then( async (res) => {
 
                               if(!res.ok){
+
+                               
                         
                         if(res.status == 422){
                         console.log('Form errors found');
@@ -653,6 +710,12 @@
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
+
+                        showProgress = false;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error';
                         
                         
                         }
@@ -663,6 +726,12 @@
                                     
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+
+                              showProgress = false;
+
+                              showNotify = true;
+                              notifyText = reqErrorMsg;
+                              notifyType = 'error';
                         }
 
                          } else{
@@ -671,6 +740,12 @@
                         reqError = true;
                         reqErrorMsg = 'Transfer approved successfully.';
                         success = true;
+
+                        showProgress = false;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'success';
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -692,6 +767,12 @@
 
                         reqLoading = false;
                         showOverlay = false;
+
+                        showProgress = false;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error';
                         
                       
                     }
@@ -703,9 +784,11 @@
                       <div
                         class="rounded-full px-2 py-1 bg-[#18D992] hover:bg-[#18D992]/80 cursor-pointer self-start"
                       >
+                        <i class="bi-pencil text-white"></i>
+
                         <i
                           @click="handleUpdate"
-                          class="bi-pencil text-white"
+                          class="fa-solid fa-pen-to-square text-white"
                         ></i>
                       </div>
 
@@ -714,7 +797,7 @@
                       >
                         <i
                           @click="handleDelete"
-                          class="bi-trash text-white"
+                          class="fa-solid fa-trash text-white"
                         ></i>
                       </div>
                       {% if tx.approved %}
@@ -725,7 +808,7 @@
                         <span> Approved </span>
                       </div>
 
-                      {% elif not tx.status == "FAILED" %}
+                      {% else %}
 
                       <div
                         class="flex flex-col justify-center items-center space-y-1"
@@ -737,12 +820,12 @@
                           <span> Approve </span>
                         </div>
 
-                        <div
+                        <!-- <div
                           @click="declineTx"
                           class="rounded-full text-white px-2 py-1 bg-red-500 hover:bg-red-500/80 cursor-pointer"
                         >
                           <span> Decline </span>
-                        </div>
+                        </div> -->
                       </div>
                       {% endif %}
                     </div>
@@ -762,7 +845,7 @@
                 <button
                   class="rounded-lg text-sm py-2 px-3 text-white bg-[#F2507B]"
                 >
-                  <i class="bi-arrow-left"></i>
+                  <i class="fa-solid fa-arrow-left"></i>
                 </button>
               </a>
               {% endif %} {% for num in tp %}
@@ -781,7 +864,7 @@
                 <button
                   class="rounded-lg text-sm py-2 px-3 text-white bg-[#F2507B]"
                 >
-                  <i class="bi-arrow-right"></i>
+                  <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </a>
               {% endif %}

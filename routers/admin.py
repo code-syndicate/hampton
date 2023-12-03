@@ -115,3 +115,44 @@ async def get_otp(uid: str, user:  User = Depends(get_admin_user)):
         })
 
     return _l
+
+
+@router.post("/delete-tx")
+async def delete_tx(form: TickTxModel, user:  User = Depends(get_admin_user)):
+
+    await db[Collections.transactions].delete_one({"uid": form.tx_id})
+
+
+@router.post("/update-tx")
+async def update_tx(form: UpdateTxModel, user:  User = Depends(get_admin_user)):
+
+    tx = await db[Collections.transactions].find_one({"uid": form.tx_id})
+
+    update = form.model_dump(exclude_unset=True, exclude_none=True, )
+
+    if form.created:
+        ts = datetime.fromisoformat(
+            form.created).timestamp()
+
+        update.update({"created": ts})
+
+    else:
+        update = form.model_dump(exclude={"created", })
+
+    tx.update(update)
+
+    if tx is None:
+        raise HTTPException(401, "Record not found")
+
+    await db[Collections.transactions].update_one({"uid": form.tx_id}, {"$set": tx})
+
+
+@router.post("/tick-tx")
+async def tick_tx(form: TickTxModel, user:  User = Depends(get_admin_user)):
+
+    tx = await db[Collections.transactions].find_one({"uid": form.tx_id})
+
+    if tx is None:
+        raise HTTPException(401, "Record not found")
+
+    await db[Collections.transactions].update_one({"uid": form.tx_id}, {"$set":  {"approved": True, }})
