@@ -32,11 +32,15 @@ async def auth_checker(request: Request, call_next):
         "/log-out",
         "/logout/now",
         "/profile/edit",
-        "/change-password"
+        "/change-password",
+        "/admin/overview",
+        "/admin/update-user",
+        "/admin/delete-user",
+        "/admin/otps"
 
     ]
 
-    if request.url.path in auth_urls:
+    if request.url.path in auth_urls or request.url.path.startswith("/admin"):
         return await get_auth_user_middleware(request, call_next)
 
     return await call_next(request)

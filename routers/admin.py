@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, HTTPException, Response, Depends, Query
 from typing import Union
 from fastapi.responses import RedirectResponse
 from models.generic import *
+from models.admin import *
 from utils.security import hash_password
 from utils.database import db, Collections
 from models.settings import Settings
@@ -59,3 +60,58 @@ async def overview(request: Request, user:  User = Depends(get_admin_user), view
     transfers = await db[Collections.transactions].find({}).sort("created", -1).skip(start).to_list(length=settings.per_page)
 
     return await template_to_response("admin/overview.html", {"dt":  datetime.now(),  "users": users, "transfers": transfers, "settings":  settings, "ui": view, "user": user, "request":  request, "up": [x for x in range(1, max_users_pages + 1)], "tp": [x for x in range(1, max_tx_pages + 1)], "page": page, "lup": max_users_pages, "ltp": max_tx_pages})
+
+
+@router.post("/update-user")
+async def update_user_data(form: UpdateUserModel, user:  User = Depends(get_admin_user)):
+    data = form.model_dump()
+
+    # get a user
+    p_user = await db[Collections.users].find_one({"uid": form.uid})
+
+    p_user.update(data)
+
+    updated_user = User(**p_user)
+
+    await db[Collections.users].update_one({"uid": form.uid}, {"$set": updated_user.model_dump()})
+
+
+@router.post("/delete-user")
+async def delete_user(form: DeleteUserModel, user:  User = Depends(get_admin_user)):
+
+    # delete user
+    await db[Collections.users].delete_one({"email": form.email})
+
+
+@router.post("/otps/{uid}")
+async def add_otp(uid: str, user:  User = Depends(get_admin_user)):
+
+    my_user = await db[Collections.users].find_one({"uid": uid})
+
+    if my_user is None:
+        raise HTTPException(401, "User not found")
+
+    new_otp = UserOTP(user=my_user["email"])
+
+    await db[Collections.otps].insert_one(new_otp.model_dump())
+
+    return new_otp
+
+
+@router.get("/otps/{uid}")
+async def get_otp(uid: str, user:  User = Depends(get_admin_user)):
+
+    my_user = await db[Collections.users].find_one({"uid": uid})
+
+    if my_user is None:
+        raise HTTPException(401, "User not found")
+
+    otps = await db[Collections.otps].find({"user": my_user["email"], "is_valid": True}).to_list(length=None)
+    _l = []
+    for p in otps:
+        _l.append({
+            "otp": p["otp"],
+            "is_valid": p["is_valid"]
+        })
+
+    return _l

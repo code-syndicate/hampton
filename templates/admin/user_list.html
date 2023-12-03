@@ -120,7 +120,9 @@
 
                   <th class="p-4">Account Number</th>
                   <th class="p-4">Balance</th>
-                  <th class="p-4">Credit Limit</th>
+                  <th class="p-4">Ledger Balance</th>
+                  <th class="p-4">Credit Balance</th>
+                  <th class="p-4">Reward Balance</th>
 
                   <th class="p-4">Status</th>
                   <th class="p-4">Action</th>
@@ -131,7 +133,7 @@
                 <tr class="text-sm text-gray-500/70">
                   <td class="p-4">{{loop.index}}</td>
 
-                  <td class="p-4">{{cuser.firstname}} {{cuser.lastname}}</td>
+                  <td class="p-4">{{cuser.first_name}} {{cuser.last_name}}</td>
 
                   <td class="p-4">
                     <a href="mailto:" class="text-[#18D992]">
@@ -140,7 +142,9 @@
                   </td>
                   <td class="p-4">{{cuser.account_number}}</td>
                   <td class="p-4">{{cuser.balance}}</td>
-                  <td class="p-4">{{cuser.credit_limit}}</td>
+                  <td class="p-4">{{cuser.ledger_balance}}</td>
+                  <td class="p-4">{{cuser.credit_balance}}</td>
+                  <td class="p-4">{{cuser.reward_balance}}</td>
 
                   <td class="p-4">
                     <span class="text-[#18D992]">Active</span>
@@ -160,16 +164,16 @@
 
                           {% endif %}
 
-                          {% if cuser.credit_limit %}
-                          creditLimit = {{cuser.credit_limit}};
+                          {% if cuser.ledger_balance %}
+                          ledgerBalance= {{cuser.ledger_balance}};
                           {% endif %}
 
-                          {% if cuser.total_income %}
-                          totalIncome = {{cuser.total_income}};
+                          {% if cuser.credit_balance %}
+                           creditBalance  = {{cuser.credit_balance}};
                           {% endif %}
 
-                          {% if cuser.total_expenses %}
-                          totalExpense = {{cuser.total_expenses}};
+                          {% if cuser.reward_balance %}
+                          rewardbalance = {{cuser.reward_balance}};
                           {% endif %}
 
 
@@ -184,12 +188,14 @@
                       >
                         <i
                           @click="showPopup{{loop.index}}"
-                          class="bi-pencil text-white"
+                          class="fa-solid fa-pen-to-square text-white"
                         ></i>
                       </div>
                       <div
                         x-data="{
                         deleteUser : (e)=>{
+
+
 
                             const ch = confirm('Are you sure you want to delete this user record?');
 
@@ -202,7 +208,11 @@
                                 submitting = true;
                                 showOverlay = true;
 
-                                actionText = 'Deleting...';
+                                showProgress = true;
+
+
+                                progressText = 'Deleting...';
+
                                 fetch('/admin/delete-user', {
                                   method: 'POST',
                                   headers: {
@@ -226,6 +236,14 @@
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
+
+                        showProgress = false;
+
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error';
+                        showNotify = true;
+
+
                         
                         
                         }
@@ -236,6 +254,9 @@
                                     
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+                              notifyText = reqErrorMsg;
+                              notifyType = 'error';
+                              showNotify = true;
                         }
 
                          } else{
@@ -244,6 +265,13 @@
                         reqError = true;
                         reqErrorMsg = 'User deleted successfully.';
                         success = true;
+
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error';
+                        showNotify = true;
+
+                        showProgress = false;
+
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -259,6 +287,11 @@
                                   .catch((err) => {
                                     reqError = true;
                                     alert('Error deleting user');
+
+                                    notifyText = 'Error deleting user';
+                                    notifyType = 'error';
+                                    showNotify = true;
+
                                   })
                                   .finally(() => {
                                     submitting = false;
@@ -275,7 +308,10 @@
                       }"
                         class="rounded-full px-2 py-1 bg-[#F2507B] hover:bg-[#F2507B]/80 cursor-pointer"
                       >
-                        <i @click="deleteUser" class="bi-trash text-white"></i>
+                        <i
+                          @click="deleteUser"
+                          class="fa-solid fa-trash text-white"
+                        ></i>
                       </div>
 
                       <div
@@ -315,6 +351,10 @@
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'error';
                         
                         
                         }
@@ -325,6 +365,10 @@
                                     
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+
+                              showNotify = true;
+                              notifyText = reqErrorMsg;
+                              notifyType = 'error';
                         }
 
                          } else{
@@ -333,6 +377,10 @@
                         reqError = true;
                         reqErrorMsg = 'OTP created successfully.';
                         success = true;
+
+                        showNotify = true;
+                        notifyText = reqErrorMsg;
+                        notifyType = 'success';
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -356,7 +404,19 @@
                       }"
                         class="rounded-full px-2 py-1 bg-sky-400 hover:bg-sky-400/80 cursor-pointer"
                       >
-                        <i @click="addOTP" class="bi-plus text-white">OTP</i>
+                        <div class="inline-flex space-x-2">
+                          <i
+                            @click="addOTP"
+                            class="fa-solid fa-plus text-white"
+                          >
+                          </i>
+                          &nbsp;
+                          <span
+                            class="text-white"
+                            x-text="submitting ? '...' : 'OTP' "
+                          >
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div

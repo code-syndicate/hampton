@@ -34,9 +34,9 @@ window.smartsupp||(function(d) {
       uid : '',
       email : '',
       balance : 0,
-      creditLimit : 0,
-      totalIncome : 0,
-      totalExpense : 0,
+      creditBalance : 0,
+      ledgerBalance : 0,
+      rewardBalance : 0,
     
       submitting : false,
       actionText : '',
@@ -48,6 +48,33 @@ window.smartsupp||(function(d) {
       showOverlay : false,
       success : false,
 
+      showNotify: false,
+      notifyText: '',
+      notifyType: '',
+      showProgress: false,
+      progressText: '',
+    
+      getErrMsg(res) {
+    
+        console.log(res)
+        if (typeof res === 'string') {
+          return res;
+        }
+      
+        if (res instanceof Error) {
+          return res?.message;
+        }
+      
+        if (typeof res === 'object') {
+          return res.detail || res.message || res.error;
+        }
+      
+       
+      
+        return 'Please correct the errors in the form'
+      }
+    
+
 
 
 
@@ -56,7 +83,10 @@ window.smartsupp||(function(d) {
     x-cloak
     class="bg-white px-4 md:px-0"
   >
-    {% include "partials/__widgets.html" %} {% if ui == 'main' %}
+    {% include "partials/__widgets.html" %} 
+    
+    
+    {% if ui == 'main' %}
 
     <!-- Navigation bar  -->
     <div class="flex flex-row min-h-screen">
@@ -136,11 +166,11 @@ window.smartsupp||(function(d) {
       x-data="{
          updateUser :  ()=>{
 
-                          submitting = true;
-                          showOverlay = true;
+           showUpdateForm = false;
+                          showProgress = true;
+                          progressText = 'Updating...';
 
 
-                          actionText = 'Updating...';
 
                           fetch('/admin/update-user', {
                             method: 'POST',
@@ -151,9 +181,9 @@ window.smartsupp||(function(d) {
                               uid,
                               email,
                               balance,
-                              creditLimit,
-                              totalIncome,
-                              totalExpense,
+                              creditBalance,
+                              rewardBalance,
+                              ledgerBalance,
                             }),
                           })
                             .then( async (res) => {
@@ -168,6 +198,10 @@ window.smartsupp||(function(d) {
                         
                         reqError = true;
                         reqErrorMsg = JSON.stringify(errors);
+
+                        notifyText = getErrMsg(errors);
+                        notifyType = 'error';
+                        showNotify = true;
                         
                         
                         }
@@ -178,6 +212,10 @@ window.smartsupp||(function(d) {
                                     
                               reqError = true;
                               reqErrorMsg  = errorMsg;
+
+                              notifyText = errorMsg;
+                              notifyType = 'error';
+                              showNotify = true;
                         }
 
                          } else{
@@ -186,6 +224,10 @@ window.smartsupp||(function(d) {
                         reqError = true;
                         reqErrorMsg = 'User record updated successfully.';
                         success = true;
+                        showUpdateForm = false;
+                        notifyText = 'User record updated successfully.';
+                        notifyType = 'success';
+                        showNotify = true;
 
                          setTimeout(()=>{
                             window.location.reload();
@@ -205,8 +247,13 @@ window.smartsupp||(function(d) {
 
                               submitting = false;
 
+                              showProgress = false;
+
+
                         reqLoading = false;
                         showOverlay = false;
+
+
                         }
       }"
       class="fixed top-0 z-20 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex flex-col justify-center items-center"
@@ -259,45 +306,45 @@ window.smartsupp||(function(d) {
             </div>
 
             <div class="w-full">
-              <label for="creditLimit" class="text-sm text-gray-500">
-                Credit Limit
+              <label for="creditBalance" class="text-sm text-gray-500">
+                Credit Balance
               </label>
               <input
                 type="text"
                 required
-                x-model="creditLimit"
-                name="creditLimit"
-                id="creditLimit"
+                x-model="creditBalance"
+                name="creditBalance"
+                id="creditBalance"
                 class="w-full tracking-wide border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div class="w-full">
-              <label for="totalExpense" class="text-sm text-gray-500">
-                Total Expenses
+              <label for="ledgerBalance" class="text-sm text-gray-500">
+                Ledger Balance
               </label>
               <input
                 type="text"
                 required
                 inputmode="numeric"
-                x-model="totalExpense"
-                name="totalExpense"
-                id="totalExpense"
+                x-model="ledgerBalance"
+                name="ledgerBalance"
+                id="ledgerBalance"
                 class="w-full tracking-wide border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div class="w-full">
-              <label for="totalIncome" class="text-sm text-gray-500">
-                Total Income
+              <label for="rewardBalance" class="text-sm text-gray-500">
+                Reward Balance
               </label>
               <input
                 type="text"
                 required
                 inputmode="numeric"
-                x-model="totalIncome"
-                name="totalIncome"
-                id="totalIncome"
+                x-model="rewardBalance"
+                name="rewardBalance"
+                id="rewardBalance"
                 class="w-full tracking-wide border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:outline-none focus:border-blue-500"
               />
             </div>
