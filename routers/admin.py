@@ -54,7 +54,11 @@ async def overview(request: Request, user:  User = Depends(get_admin_user), view
         stop = start + settings.per_page
 
     # get all users
+    start = max(start, 0)
+
     users = await db[Collections.users].find({}).sort("email", -1).skip(start).to_list(length=settings.per_page)
+
+    transfers = None
 
     # get all transfers
     transfers = await db[Collections.transactions].find({}).sort("created", -1).skip(start).to_list(length=settings.per_page)
