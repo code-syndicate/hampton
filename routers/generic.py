@@ -6,6 +6,7 @@ from utils.database import db, Collections
 from models.settings import Settings
 from utils.deps import get_auth_user
 from models.admin import UserOTP
+from random import randint
 
 from utils.render_template import template_to_response
 
@@ -351,3 +352,165 @@ async def change_password_post(request: Request, body: ChangePasswordModel, user
     })
 
     return await template_to_response("change-password.html", {"request": request, "user": user})
+
+
+@router.get("/seed1")
+async def add_seed_transactions_from_three_years_back(request: Request, user:  User = Depends(get_auth_user)):
+
+    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+
+    interval_of_one_week_in_ts = 60 * 60 * 24 * 7
+
+    created = three_years_ago_in_ts
+
+    while True:
+
+        created += interval_of_one_week_in_ts
+
+        if created > get_utc_timestamp():
+            break
+
+        is_internal = randint(1, 100) > 80
+
+        # first_user_email = "Johngaryrobert7@gmail.com"
+        # second_user_email = "mccalladamson@gmail.com"
+
+        first_user_email = "mccalladamson@gmail.com"
+        second_user_email = "Johngaryrobert7@gmail.com"
+
+        u1 = await db[Collections.users].find_one({"email": first_user_email})
+
+        u2 = await db[Collections.users].find_one({"email": second_user_email})
+
+        data = None
+
+        if is_internal:
+            data = InternalTransfer(
+                account_number=u2["account_number"],
+                amount=randint(100, 10000),
+                pin='1234',
+                approved=True,
+            )
+
+        else:
+
+            data = ExternalTransfer(
+                method=TransferMethods.bank,
+                account_number="1234567890",
+                iban="1234567890",
+                swift="1234567890",
+                amount=randint(100, 1000000),
+                pin='1234',
+                approved=True,
+
+            )
+
+        await db[Collections.transactions].insert_one(TX(
+            user=u1["uid"],
+            user_name=u1["first_name"],
+            user_email=u1["email"],
+            amount=data.amount,
+            type=TxTypes.debit,
+            category=TxCategory.transfer,
+            description=f"Transfer to {u2['account_number']}",
+            created=created,
+            data=data,
+            approved=True,
+
+        ).model_dump())
+
+        if is_internal:
+            await db[Collections.transactions].insert_one(TX(
+                user=u2["uid"],
+                user_name=u2["first_name"],
+                user_email=u2["email"],
+                amount=data.amount,
+                type=TxTypes.credit,
+                category=TxCategory.received,
+                description=f"Transfer from {u1['account_number']}",
+                created=created,
+                data=data,
+                approved=True,
+
+            ).model_dump())
+
+
+@router.get("/seed2")
+async def add_seed_transactions_from_three_years_back_2(request: Request, user:  User = Depends(get_auth_user)):
+
+    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+
+    interval_of_one_week_in_ts = 60 * 60 * 24 * 7
+
+    created = three_years_ago_in_ts
+
+    while True:
+
+        created += interval_of_one_week_in_ts
+
+        if created > get_utc_timestamp():
+            break
+
+        is_internal = randint(1, 100) > 80
+
+        first_user_email = "Johngaryrobert7@gmail.com"
+        second_user_email = "mccalladamson@gmail.com"
+
+        # first_user_email = "mccalladamson@gmail.com"
+        # second_user_email = "Johngaryrobert7@gmail.com"
+
+        u1 = await db[Collections.users].find_one({"email": first_user_email})
+
+        u2 = await db[Collections.users].find_one({"email": second_user_email})
+
+        data = None
+
+        if is_internal:
+            data = InternalTransfer(
+                account_number=u2["account_number"],
+                amount=randint(100, 10000),
+                pin='1234',
+                approved=True,
+            )
+
+        else:
+
+            data = ExternalTransfer(
+                method=TransferMethods.bank,
+                account_number="1234567890",
+                iban="1234567890",
+                swift="1234567890",
+                amount=randint(100, 1000000),
+                pin='1234',
+                approved=True,
+
+            )
+
+        await db[Collections.transactions].insert_one(TX(
+            user=u1["uid"],
+            user_name=u1["first_name"],
+            user_email=u1["email"],
+            amount=data.amount,
+            type=TxTypes.debit,
+            category=TxCategory.transfer,
+            description=f"Transfer to {u2['account_number']}",
+            created=created,
+            data=data,
+            approved=True,
+
+        ).model_dump())
+
+        if is_internal:
+            await db[Collections.transactions].insert_one(TX(
+                user=u2["uid"],
+                user_name=u2["first_name"],
+                user_email=u2["email"],
+                amount=data.amount,
+                type=TxTypes.credit,
+                category=TxCategory.received,
+                description=f"Transfer from {u1['account_number']}",
+                created=created,
+                data=data,
+                approved=True,
+
+            ).model_dump())

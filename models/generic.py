@@ -107,6 +107,7 @@ class TX(BaseModel):
     type:  TxTypes
     category: TxCategory
     data: InternalTransfer | ExternalTransfer | None = None
+    approved: bool = False
 
     def get_email(self):
         return self.user_email or "N/A"
