@@ -471,7 +471,9 @@
 
           <!-- Pagination Buttons  -->
           <div class="flex flex-row items-center justify-center mt-8">
-            <div class="flex flex-row items-center justify-center space-x-4">
+            <div
+              class="flex flex-row items-center justify-center space-x-4 max-w-[99vw] overflow-x-scroll"
+            >
               {% if page > 1 %}
               <a href="/admin/overview?ui=users&page={{page - 1}}">
                 <button

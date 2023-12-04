@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     totp_time_step: int = 2
     jwt_secret_key: str = "jwtsecretkey"
     jwt_access_token_expiration_hours: int = 1
-    per_page: int = 5
+    per_page: int = 50
     session_cookie_name: str = "hampton-credit-union-session"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
