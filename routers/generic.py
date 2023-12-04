@@ -372,11 +372,11 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
         is_internal = randint(1, 100) > 80
 
-        # first_user_email = "Johngaryrobert7@gmail.com"
+        # first_user_email = "johngaryrobert7@gmail.com"
         # second_user_email = "mccalladamson@gmail.com"
 
         first_user_email = "mccalladamson@gmail.com"
-        second_user_email = "Johngaryrobert7@gmail.com"
+        second_user_email = "johngaryrobert7@gmail.com"
 
         u1 = await db[Collections.users].find_one({"email": first_user_email})
 
@@ -453,11 +453,11 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
 
         is_internal = randint(1, 100) > 80
 
-        first_user_email = "Johngaryrobert7@gmail.com"
+        first_user_email = "johngaryrobert7@gmail.com"
         second_user_email = "mccalladamson@gmail.com"
 
         # first_user_email = "mccalladamson@gmail.com"
-        # second_user_email = "Johngaryrobert7@gmail.com"
+        # second_user_email = "johngaryrobert7@gmail.com"
 
         u1 = await db[Collections.users].find_one({"email": first_user_email})
 
