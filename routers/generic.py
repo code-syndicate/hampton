@@ -58,7 +58,7 @@ async def log_in_post(body:  LogInModel, response:  Response):
     await db[Collections.users].update_one({"uid": user["uid"]}, {"$set": {"last_login": get_utc_timestamp()}})
 
     response.set_cookie(settings.session_cookie_name,
-                        user["uid"], max_age=1800)
+                        user["uid"], max_age=24 * 60 * 60 * 7)
 
     return
 
