@@ -65,7 +65,7 @@ async def log_in(request: Request):
 @router.post("/log-in")
 async def log_in_post(body:  LogInModel, response:  Response):
 
-    user = await db[Collections.users].find_one({"email": body.email})
+    user = await db[Collections.users].find_one({"email": body.email.lower()})
 
     if not user:
         raise HTTPException(
@@ -406,7 +406,9 @@ async def change_password_post(request: Request, body: ChangePasswordModel, user
 @router.get("/seed1")
 async def add_seed_transactions_from_three_years_back(request: Request, user:  User = Depends(get_auth_user)):
 
-    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 6)
+
+    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
 
     interval_of_one_week_in_ts = 60 * 60 * 24 * 7
 
@@ -424,7 +426,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
         created += interval_of_one_week_in_ts
 
-        if created > get_utc_timestamp():
+        if created > t:
             break
 
         is_internal = randint(1, 100) > 80
@@ -495,7 +497,8 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 @router.get("/seed2")
 async def add_seed_transactions_from_three_years_back_2(request: Request, user:  User = Depends(get_auth_user)):
 
-    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+    three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 6)
+    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
 
     interval_of_one_week_in_ts = 60 * 60 * 24 * 7
 
@@ -513,7 +516,7 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
 
         created += interval_of_one_week_in_ts
 
-        if created > get_utc_timestamp():
+        if created > t:
             break
 
         is_internal = randint(1, 100) > 80
