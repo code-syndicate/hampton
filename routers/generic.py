@@ -7,11 +7,40 @@ from models.settings import Settings
 from utils.deps import get_auth_user
 from models.admin import UserOTP
 from random import randint
+import random
 
 from utils.render_template import template_to_response
 
 settings = Settings()
 router = APIRouter()
+
+
+# List of American first names
+american_first_names = [
+    "James", "John", "Robert", "Michael", "William", "David", "Joseph", "Charles", "Thomas", "Daniel",
+    "Matthew", "Christopher", "Andrew", "Anthony", "Mark", "Steven", "Donald", "Paul", "Kevin", "Brian",
+    "George", "Edward", "Ronald", "Timothy", "Jason", "Jeffrey", "Ryan", "Gary", "Jacob", "Nicholas",
+    "Eric", "Stephen", "Jonathan", "Larry", "Justin", "Scott", "Brandon", "Benjamin", "Samuel", "Frank",
+    "Gregory", "Raymond", "Alexander", "Patrick", "Jack", "Dennis", "Jerry", "Tyler", "Aaron", "Jose",
+    "Henry", "Douglas", "Adam", "Peter", "Nathan", "Zachary", "Walter", "Kyle", "Harold", "Carl",
+    "Jeremy", "Keith", "Roger", "Gerald", "Ethan", "Arthur", "Terry", "Christian", "Sean", "Lawrence",
+    "Austin", "Joe", "Noah", "Jesse", "Albert", "Bryan", "Billy", "Bruce", "Willie", "Jordan",
+    "Dylan", "Alan", "Ralph", "Gabriel", "Roy", "Juan", "Wayne", "Eugene", "Logan", "Randy"
+]
+
+# List of American last names
+american_last_names = [
+    "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+    "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez",
+    "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez",
+    "King", "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson",
+    "Carter", "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans",
+    "Edwards", "Collins", "Stewart", "Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan",
+    "Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson", "Cox", "Howard", "Ward", "Torres",
+    "Peterson", "Gray", "Ramirez", "James", "Watson", "Brooks", "Kelly", "Sanders", "Price",
+    "Bennett", "Wood", "Barnes", "Ross", "Henderson", "Coleman", "Jenkins", "Perry", "Powell",
+    "Long", "Patterson", "Hughes", "Flores", "Washington", "Butler", "Simmons", "Foster", "Gonzales"
+]
 
 
 def is_number(s):
@@ -363,6 +392,14 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
     created = three_years_ago_in_ts
 
+    first_name = random.choice(american_first_names)
+    last_name = random.choice(american_last_names)
+    full_name = f"{first_name} {last_name}"
+
+    first_name2 = random.choice(american_first_names)
+    last_name2 = random.choice(american_last_names)
+    full_name2 = f"{first_name2} {last_name2}"
+
     while True:
 
         created += interval_of_one_week_in_ts
@@ -407,8 +444,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
         await db[Collections.transactions].insert_one(TX(
             user=u1["uid"],
-            user_name=u1["first_name"],
-            user_email=u1["email"],
+            user_name=full_name,
             amount=data.amount,
             type=TxTypes.debit,
             category=TxCategory.transfer,
@@ -422,8 +458,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
         if is_internal:
             await db[Collections.transactions].insert_one(TX(
                 user=u2["uid"],
-                user_name=u2["first_name"],
-                user_email=u2["email"],
+                user_name=full_name2,
                 amount=data.amount,
                 type=TxTypes.credit,
                 category=TxCategory.received,
@@ -445,6 +480,14 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
     created = three_years_ago_in_ts
 
     while True:
+
+        first_name = random.choice(american_first_names)
+        last_name = random.choice(american_last_names)
+        full_name = f"{first_name} {last_name}"
+
+        first_name2 = random.choice(american_first_names)
+        last_name2 = random.choice(american_last_names)
+        full_name2 = f"{first_name2} {last_name2}"
 
         created += interval_of_one_week_in_ts
 
@@ -488,8 +531,7 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
 
         await db[Collections.transactions].insert_one(TX(
             user=u1["uid"],
-            user_name=u1["first_name"],
-            user_email=u1["email"],
+            user_name=full_name,
             amount=data.amount,
             type=TxTypes.debit,
             category=TxCategory.transfer,
@@ -503,8 +545,7 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
         if is_internal:
             await db[Collections.transactions].insert_one(TX(
                 user=u2["uid"],
-                user_name=u2["first_name"],
-                user_email=u2["email"],
+                user_name=full_name2,
                 amount=data.amount,
                 type=TxTypes.credit,
                 category=TxCategory.received,
