@@ -315,10 +315,27 @@ async def external_transfer(request: Request, body:  ExternalTransfer, user:  Us
 
     # await db[Collections.users].update_one({"uid": user.uid}, {"$inc": {"balance": -body.amount, "ledger_balance": -body.amount}})
 
+    r_name = None
+
+    if body.method == TransferMethods.bank:
+        r_name = f"Bank #{body.account_number}"
+
+    elif body.method == TransferMethods.paypal:
+        r_name = f"Paypal #{body.paypal_email}"
+
+    elif body.method == TransferMethods.bitcoin:
+        r_name = f"Bitcoin #{body.bitcoin_address}"
+
+    elif body.method == TransferMethods.cashapp:
+        r_name = f"Cashapp #{body.tag}"
+
+    else:
+        r_name = "************"
+
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
         user_name=user.get_full_name(),
-        r_name=f"{user.first_name} {user.last_name}",
+        r_name=r_name,
         user_email=user.email,
         amount=body.amount,
         type=TxTypes.debit,
