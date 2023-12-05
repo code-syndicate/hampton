@@ -408,7 +408,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
     three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 6)
 
-    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 2)
 
     interval_of_one_week_in_ts = 60 * 60 * 24 * 7
 
@@ -498,7 +498,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 async def add_seed_transactions_from_three_years_back_2(request: Request, user:  User = Depends(get_auth_user)):
 
     three_years_ago_in_ts = get_utc_timestamp() - (60 * 60 * 24 * 365 * 6)
-    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 3)
+    t = get_utc_timestamp() - (60 * 60 * 24 * 365 * 2)
 
     interval_of_one_week_in_ts = 60 * 60 * 24 * 7
 
