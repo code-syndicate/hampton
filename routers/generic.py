@@ -392,15 +392,15 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
 
     created = three_years_ago_in_ts
 
-    first_name = random.choice(american_first_names)
-    last_name = random.choice(american_last_names)
-    full_name = f"{first_name} {last_name}"
-
-    first_name2 = random.choice(american_first_names)
-    last_name2 = random.choice(american_last_names)
-    full_name2 = f"{first_name2} {last_name2}"
-
     while True:
+
+        first_name = random.choice(american_first_names)
+        last_name = random.choice(american_last_names)
+        full_name = f"{first_name} {last_name}"
+
+        first_name2 = random.choice(american_first_names)
+        last_name2 = random.choice(american_last_names)
+        full_name2 = f"{first_name2} {last_name2}"
 
         created += interval_of_one_week_in_ts
 
