@@ -102,6 +102,7 @@ class TX(BaseModel):
     user:  str = Field(min_length=8)
     user_email:  EmailStr | None = Field(default=None)
     user_name:  str = Field(min_length=3)
+    r_name:  str | None = Field(default=None)
     description: str | None = Field(min_length=3, default=None)
     amount:  float = Field(gt=0)
     type:  TxTypes

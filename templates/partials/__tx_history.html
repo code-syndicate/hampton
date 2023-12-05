@@ -39,11 +39,11 @@
       >
         <td class="text-base p-6 text-left">
           <div class="w-full flex-row justify-center items-center space-x-8">
-            <span> {{tx.user_name}} </span>
+            <span> {{tx.r_name}} </span>
             <span
-              class="capitalize {% if tx.category == 'transfer' %} text-red-500 bg-red-100 {% else %} text-green-500 bg-green-100 {% endif %} rounded-2xl font-medium py-1 px-2 text-xs"
+              class="capitalize {% if tx.category == 'transfer' %} text-green-500 bg-green-100 {% else %} text-red-500 bg-red-100 {% endif %} rounded-2xl font-medium py-1 px-2 text-xs"
             >
-              {% if tx.category == 'transfer' %} Sender {% else %} Recipient {%
+              {% if tx.category == 'transfer' %} Recipient {% else %} Sender {%
               endif %}
             </span>
 

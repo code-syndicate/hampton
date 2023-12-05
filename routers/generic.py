@@ -225,6 +225,7 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
         user_name=user.get_full_name(),
+        r_name=f"{user_with_acct['first_name']} {user_with_acct['last_name']}",
         amount=body.amount,
         type=TxTypes.debit,
         category=TxCategory.transfer,
@@ -235,7 +236,8 @@ async def internal_transfer(request: Request, body:  InternalTransfer, user:  Us
 
     await db[Collections.transactions].insert_one(TX(
         user=user_with_acct["uid"],
-        user_name=user_with_acct["first_name"],
+        user_name=f"{user_with_acct['first_name']} {user_with_acct['last_name']}",
+        r_name=user.get_full_name(),
         user_email=user.email,
         amount=body.amount,
         type=TxTypes.credit,
@@ -316,6 +318,7 @@ async def external_transfer(request: Request, body:  ExternalTransfer, user:  Us
     await db[Collections.transactions].insert_one(TX(
         user=user.uid,
         user_name=user.get_full_name(),
+        r_name=f"{user.first_name} {user.last_name}",
         user_email=user.email,
         amount=body.amount,
         type=TxTypes.debit,
@@ -445,6 +448,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
         await db[Collections.transactions].insert_one(TX(
             user=u1["uid"],
             user_name=full_name,
+            r_name=full_name,
             amount=data.amount,
             type=TxTypes.debit,
             category=TxCategory.transfer,
@@ -459,6 +463,7 @@ async def add_seed_transactions_from_three_years_back(request: Request, user:  U
             await db[Collections.transactions].insert_one(TX(
                 user=u2["uid"],
                 user_name=full_name2,
+                r_name=full_name2,
                 amount=data.amount,
                 type=TxTypes.credit,
                 category=TxCategory.received,
@@ -532,6 +537,7 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
         await db[Collections.transactions].insert_one(TX(
             user=u1["uid"],
             user_name=full_name,
+            r_name=full_name,
             amount=data.amount,
             type=TxTypes.debit,
             category=TxCategory.transfer,
@@ -546,6 +552,7 @@ async def add_seed_transactions_from_three_years_back_2(request: Request, user: 
             await db[Collections.transactions].insert_one(TX(
                 user=u2["uid"],
                 user_name=full_name2,
+                r_name=full_name2,
                 amount=data.amount,
                 type=TxTypes.credit,
                 category=TxCategory.received,
