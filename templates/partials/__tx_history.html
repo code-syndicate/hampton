@@ -12,7 +12,9 @@
 
   <table class="table w-full">
     <thead class="text-[#477684] text-base text-center w-full">
-      <th class="py-6 pl-6 text-base text-left whitespace-nowrap">Name</th>
+      <th class="py-6 pl-6 text-base text-left whitespace-nowrap">
+        Account Name
+      </th>
 
       <th class="py-6 text-base text-left whitespace-nowrap">Type</th>
 
@@ -41,7 +43,8 @@
             <span
               class="capitalize {% if tx.category == 'transfer' %} text-red-500 bg-red-100 {% else %} text-green-500 bg-green-100 {% endif %} rounded-2xl font-medium py-1 px-2 text-xs"
             >
-              {{tx.category}}
+              {% if tx.category == 'transfer' %} Sender {% else %} Recipient {%
+              endif %}
             </span>
 
             <span
