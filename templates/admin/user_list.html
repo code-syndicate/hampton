@@ -141,10 +141,42 @@
                     </a>
                   </td>
                   <td class="p-4">{{cuser.account_number}}</td>
-                  <td class="p-4">{{cuser.balance}}</td>
-                  <td class="p-4">{{cuser.ledger_balance}}</td>
-                  <td class="p-4">{{cuser.credit_balance}}</td>
-                  <td class="p-4">{{cuser.reward_balance}}</td>
+                  <td class="p-4">
+                    <div
+                      x-data="{
+                      d : new Intl.NumberFormat().format({{cuser.balance}})
+                    }"
+                    >
+                      <span x-text="d"></span>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    <div
+                      x-data="{
+                    d : new Intl.NumberFormat().format({{cuser.ledger_balance}})
+                  }"
+                    >
+                      <span x-text="d"></span>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    <div
+                      x-data="{
+                    d : new Intl.NumberFormat().format({{cuser.credit_balance}})
+                  }"
+                    >
+                      <span x-text="d"></span>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    <div
+                      x-data="{
+                    d : new Intl.NumberFormat().format({{cuser.reward_balance}})
+                  }"
+                    >
+                      <span x-text="d"></span>
+                    </div>
+                  </td>
 
                   <td class="p-4">
                     <span class="text-[#18D992]">Active</span>

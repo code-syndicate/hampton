@@ -62,7 +62,16 @@
           {{tx.uid}}
         </td>
 
-        <td class="text-base pr-6 text-left">$ {{tx.amount}}</td>
+        <td
+          x-data="{
+          d : new Intl.NumberFormat().format({{tx.amount}})
+        }"
+          class="text-base pr-6 text-left"
+        >
+          $
+
+          <span x-text="d"></span>
+        </td>
 
         <td class="text-base pr-6 text-left">
           {% if tx.approved %}

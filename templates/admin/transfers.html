@@ -422,7 +422,16 @@
                     {% endif %}
                   </td>
 
-                  <td class="p-4">${{tx.amount}}</td>
+                  <td class="p-4">
+                    $
+                    <div
+                      x-data="{
+                    d : new Intl.NumberFormat().format({{tx.amount}})
+                  }"
+                    >
+                      <span x-text="d"></span>
+                    </div>
+                  </td>
                   <td class="p-4 capitalize">{{ tx.type }}</td>
 
                   <td class="p-4 capitalize">{{ tx.category }}</td>

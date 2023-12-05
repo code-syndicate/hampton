@@ -16,29 +16,40 @@
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Current Ledger Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">
+          <p
+          
+          x-data="{
+            d : new Intl.NumberFormat().format({{user.ledger_balance}})
+          }"
+          class="text-lg lg:text-xl text-black/90 font-medium">
 
             $
             <span
-              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.ledger_balance}})"
+              x-text="d"
             >
-              {{user.ledger_balance}}
             </span>
 
           </p>
         </div>
 
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
-          <p class="text-sm text-gray-400 ">Current Credit Balance</p>
+          <p
+          
+          
+          class="text-sm text-gray-400 ">Current Credit Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">
+          <p
+          
+          x-data="{
+            d : new Intl.NumberFormat().format({{user.credit_balance}})
+          }"
+          class="text-lg lg:text-xl text-black/90 font-medium">
 
 
             $
             <span
-              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.credit_balance}})"
+              x-text="d"
             >
-              {{user.credit_balance}}
             </span>
 
           </p>
@@ -49,14 +60,18 @@
         <div class="bg-white rounded-xl p-4 pr-16 inline-block space-y-2 w-full self-stretch">
           <p class="text-sm text-gray-400 ">Spendable Reward Balance</p>
 
-          <p class="text-lg lg:text-xl text-black/90 font-medium">
+          <p 
+          
+          x-data="{
+            d : new Intl.NumberFormat().format({{user.reward_balance}})
+          }"
+          class="text-lg lg:text-xl text-black/90 font-medium">
 
 
             $
             <span
-              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.reward_balance}})"
+              x-text="d"
             >
-              {{user.reward_balance}}
             </span>
 
           </p>

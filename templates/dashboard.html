@@ -31,13 +31,14 @@ body %}
         >
           <p class="text-sm text-gray-400">Total Account Balance</p>
 
-          <p class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium">
+          <p
+            x-data="{
+            d : new Intl.NumberFormat().format({{user.balance}})
+          }"
+            class="text-lg lg:text-xl xl:text-2xl text-black/90 font-medium"
+          >
             $
-            <span
-              x-text="new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format({{user.balance}})"
-            >
-              {{user.balance}}
-            </span>
+            <span x-text="d"> </span>
           </p>
 
           <div class="hidden lg:block text-2xl text-gray-400">
